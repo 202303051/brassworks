@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 function walk(directory) {
   return readdirSync(new URL('../' + directory + '/', import.meta.url), {
@@ -18,11 +19,15 @@ function run(command, args) {
     cwd: new URL('../', import.meta.url),
   });
 }
-run('npm', ['exec', '--', 'eslint', ...sources.filter((p) => /\.(jsx?|mjs)$/.test(p))]);
-run('npm', [
-  'exec',
-  '--',
-  'prettier',
+// Execute installed JavaScript CLIs directly: npm.cmd cannot be spawned with
+// shell:false on Windows, and a project-local Node need not be on the global PATH.
+const cli = (path) => fileURLToPath(new URL('../node_modules/' + path, import.meta.url));
+run(process.execPath, [
+  cli('eslint/bin/eslint.js'),
+  ...sources.filter((p) => /\.(jsx?|mjs)$/.test(p)),
+]);
+run(process.execPath, [
+  cli('prettier/bin/prettier.cjs'),
   '--check',
   ...sources,
   'tests/factory-model.test.mjs',

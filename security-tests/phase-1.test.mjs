@@ -45,7 +45,7 @@ test('demo storage does not store authentication tokens or call a cloud data end
   );
 });
 test('environment values and release keys stay ignored', () => {
-  const ignored = read('.gitignore').split('\n');
+  const ignored = read('.gitignore').split(/\r?\n/);
   for (const entry of ['.env', '.env.*', '!.env.example', '*.jks', '*.keystore', '*.p12', '*.pem'])
     assert.ok(ignored.includes(entry));
 });

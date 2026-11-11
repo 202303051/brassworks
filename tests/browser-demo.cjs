@@ -1,6 +1,27 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const { join } = require('node:path');
 const { chromium } = require('playwright');
+
+function installedBrowser() {
+  if (process.env.CHROMIUM_PATH) return process.env.CHROMIUM_PATH;
+  if (process.platform !== 'win32') return undefined;
+  for (const folder of [
+    process.env.PROGRAMFILES,
+    process.env['PROGRAMFILES(X86)'],
+    process.env.LOCALAPPDATA,
+  ]) {
+    if (!folder) continue;
+    for (const relative of [
+      'Google/Chrome/Application/chrome.exe',
+      'Microsoft/Edge/Application/msedge.exe',
+    ]) {
+      const candidate = join(folder, relative);
+      if (fs.existsSync(candidate)) return candidate;
+    }
+  }
+  return undefined;
+}
 
 const base = process.env.APP_BASE_URL || 'http://localhost:4173';
 const hostname = new URL(base).hostname;
@@ -76,7 +97,7 @@ async function fillOutput(page, planId, count) {
 
 (async () => {
   const browser = await chromium.launch({
-    executablePath: process.env.CHROMIUM_PATH || undefined,
+    executablePath: installedBrowser(),
     headless: true,
     args: ['--no-sandbox'],
     proxy: process.env.HTTPS_PROXY

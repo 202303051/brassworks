@@ -1,10 +1,22 @@
 # Brassworks
 
-A standalone brass-factory web application. Version **0.3.0** adds the Phase 2 PostgreSQL database foundation. The factory screens remain a browser-local demo until the authentication and data-connection phases.
+A standalone brass-factory web application. Version **0.3.1** adds Windows local setup to the completed Phase 0–2 application. The factory screens remain a browser-local demo until the authentication and data-connection phases.
 
 ## Run locally
 
-Install Node 24 LTS, then run:
+On this Windows PC, double-click **Start-Brassworks.cmd** and open **http://localhost:5173**. Keep the terminal window open while using the app; press Ctrl+C to stop it.
+
+To install on a fresh Windows checkout, open PowerShell in this folder and run:
+
+```powershell
+.\scripts\setup-local.ps1
+```
+
+For a phone preview, connect the phone and PC to the same Wi-Fi and run **Start-Brassworks-Phone.cmd**. Open the printed private-network address on the phone. This is a browser preview of the React web app, not an Expo Go build. The preview binds only to a private IPv4 address on port 5174; Windows Firewall may request access to your private network. Each browser keeps its own demo data. Restart the phone preview if the PC's Wi-Fi address changes.
+
+The installer downloads Node 24.22.1 and npm from nodejs.org, verifies the official SHA-256 checksum and installs the locked dependencies. Everything goes in the ignored `.tools/` directory; no administrator access or global PATH change is needed. **Brassworks-Terminal.cmd** opens a terminal with this local Node/npm on its PATH for maintenance commands.
+
+If Node 24 LTS and npm are already installed, or on another operating system, run:
 
 ```sh
 npm ci
@@ -54,4 +66,4 @@ Actual results, findings and remaining limits are recorded in [validation](docs/
 
 Authentication is Phase 3; connecting the UI to shared database records is Phase 4. The current delivery is React web and does not produce Expo, Android or iOS binaries.
 
-GitHub is now the application source of truth; Apper has been disconnected and is no longer used for updates. Existing commits and tags are retained. See [versioning](docs/versioning.md) for branches, pull requests, tags and rollback. The original brief, previous internal reports, local environment values and credentials are excluded from this public repository.
+GitHub is the application source of truth. All phases now use **main**, with separate commits per phase, and development continues one phase at a time. Existing commits and tags are retained. See [versioning](docs/versioning.md) for history, tags and rollback. The original brief, previous internal reports, local environment values and credentials are excluded from this public repository.

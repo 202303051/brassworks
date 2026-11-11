@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.1 — Windows local setup
+
+- Put the completed Phase 0–2 history on `main`; use a separate commit for each future phase, one phase at a time.
+- Add a checksum-verified, project-local Node 24/npm installer and Windows app/terminal launchers.
+- Add a separate phone-browser preview launcher bound to the PC's private IPv4 address; this web version is not an Expo Go build.
+- Run lint and format CLIs directly with Node so `npm run check` works on Windows without spawning `npm.cmd`.
+- Normalize source line endings and make the ignore-rule test accept Windows line endings.
+- Preserve every existing factory workflow and browser-local data. Authentication remains Phase 3.
+
 ## 0.3.0 — Database and standalone application
 
 - Remove the Apper connection, runtime SDK/CDN, template authentication and unused store/components; run directly with Vite.

@@ -1,63 +1,53 @@
-# Versioning and source ownership
+# Main branch and phase history
 
-GitHub is the source of truth for Brassworks. The Apper connection was removed at the owner's request; this repository runs independently and future changes are not synchronized back to Apper. Existing history and version tags are retained.
+The owner now requires all completed phases on **main**, with separate conventional commits for each phase. Continue one phase at a time and wait for the owner's instruction before starting the next phase. This replaces the earlier feature/develop/PR workflow.
 
-- `main`: production history.
-- `develop`: integration through reviewed pull requests.
-- `feature/phase-2-database-standalone`: Phase 2 and removal of builder dependencies.
-- `v0.3.0`: the Phase 2 application/database source version.
+Phase 0, Phase 1 and Phase 2 already have separate commits. Main is advanced to include that existing history; nothing is squashed, force-pushed or rewritten. Older branch names remain historical references and are not the workflow for future phases.
 
-Every completed version is committed, pushed and checked against the remote SHA. Never force-push or overwrite unrelated work. Keep the original brief, earlier internal reports, credentials, local environment values and signing material out of this public repository. Application source, migrations, executable tests and public setup/validation guides belong here.
+| Phase                          | Source commit                            | Saved version |
+| ------------------------------ | ---------------------------------------- | ------------- |
+| 0: foundation                  | `cf81667`                                | `v0.1.0`      |
+| 1: four factory demo workflows | `146f04c`                                | `v0.2.0`      |
+| 2: database and standalone app | `de907de`, followed by test-runner fixes | `v0.3.0`      |
+| Windows local setup            | Separate follow-up commit on main        | `0.3.1`       |
 
-## Exact Phase 2 workflow
+Phase 3 authentication is next; this setup update does not start it. The UI remains browser-local until the later data-connection phase.
 
-The working phase branch is already created from `develop`. These commands describe the complete save/review workflow; do not recreate an existing branch or version tag.
+## Save each future phase
+
+Run the appropriate checks and update the changelog before committing. Check status carefully and stage the intended app/source files explicitly. Do not stage `.tools`, environment files, credentials, the original brief or internal reports in this public repository.
 
 ```sh
-git switch develop
-git pull --ff-only origin develop
-git switch -c feature/phase-2-database-standalone
-npm ci
+git switch main
+git pull --ff-only origin main
 npm run check
-npm audit --audit-level=high
 npm run build
 npm run test:browser
-npm run test:database
-git add .
-git commit -m "feat: add Phase 2 database and standalone application"
-git push -u origin feature/phase-2-database-standalone
+git status --short
 ```
 
-Create a public PR body in a local text file describing the final change and actual validation, then open the PR:
+Stage the reviewed files, commit with a message describing the phase (for example, `feat: implement Phase 3 authentication`), then save and verify:
 
 ```sh
-gh pr create --base develop --head feature/phase-2-database-standalone --title "feat: add Phase 2 database and standalone app" --body-file phase-2-pr.md
+git push origin main
+git rev-parse HEAD
+git ls-remote origin refs/heads/main
 ```
 
-After review and successful required checks, merge through GitHub's PR page. Create the annotated version tag on the tested source commit, not on an unrelated branch:
+The local and remote SHAs must match before reporting that a version is saved on GitHub. A commit that exists only on this PC is reported as local. Tags name tested phase versions and must not be moved or recreated.
 
-```sh
-git switch feature/phase-2-database-standalone
-git tag -a v0.3.0 -m "Phase 2: database and standalone application"
-git push origin refs/tags/v0.3.0
-git ls-remote origin refs/heads/feature/phase-2-database-standalone refs/tags/v0.3.0 'refs/tags/v0.3.0^{}'
-```
+## Run locally
 
-The tag's peeled SHA must match the tested branch commit. PR merge state, source SHA and actual checks are reported in [validation](validation.md); these example commands do not imply a PR has already been merged. Publishing a GitHub Release uses the tested tag and notes from `CHANGELOG.md`.
-
-## Check out a saved version
+On Windows, run `scripts/setup-local.ps1` once, then double-click `Start-Brassworks.cmd`. `Brassworks-Terminal.cmd` provides Node/npm for checks. On systems with Node 24 and npm already installed:
 
 ```sh
 git clone https://github.com/202303051/brassworks.git
 cd brassworks
-git fetch origin --tags
-git switch --detach v0.3.0
+git switch main
 npm ci
 npm run dev
 ```
 
 ## Rollback
 
-Use `git revert` through a new branch and PR to undo source changes while preserving history. For example, select the commit to revert with `git log --oneline`, run `git revert` with that selected SHA, rerun the relevant checks and push the branch for review.
-
-A source revert does not undo an already-applied database migration. Database rollback requires a reviewed forward migration or a verified backup restore; do not drop tables to make the source look older. The current web delivery has no Expo/EAS builds or OTA updates to republish.
+Use `git revert` on the selected commit to preserve history, repeat the relevant checks and push main. A code revert does not reverse a database migration; that needs a reviewed forward migration or tested backup restoration. Native mobile builds and OTA distribution are not part of the current web delivery.

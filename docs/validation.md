@@ -1,4 +1,19 @@
-# Phase 2 validation — 0.3.0
+# Windows local setup — 0.3.1
+
+Executed on 12 November 2026 on the Windows PC, using the project-local Node 24.22.1 runtime and fake browser records.
+
+- The Node/npm archive was downloaded from nodejs.org and checked against the official SHA-256 manifest before extraction. Locked dependency installation completed; its audit reported zero vulnerabilities.
+- `npm run check` passed: lint, source formatting and all 64 tests, with 100% lines, 98.72% branches and 98% functions for the covered business modules.
+- The production build passed. The existing warning about the main bundle exceeding 500 kB remains.
+- All 28 browser scenarios passed with installed Chrome and no uncaught page errors. These use isolated storage and do not overwrite the user's browser records.
+- The local development server returned HTTP 200 and the running factory home screen was verified at `http://localhost:5173`.
+- The separate phone-browser preview returned HTTP 200 on the PC's private Wi-Fi address at port 5174. A QR image was generated locally; physical-phone connectivity still depends on the same Wi-Fi and Windows Firewall. No physical-device pass is claimed.
+- The Windows changes fix `npm.cmd` spawning in the check runner, make the ignore-rule assertion accept CRLF, and use LF source checkouts for consistent formatting. Browser tests now find installed Chrome/Edge on Windows. CI also includes a Windows job; remote results must be checked after pushing.
+- `npm run test:database` was attempted and could not start because Docker is absent (`spawnSync docker ENOENT`). SQL and concurrency tests were **not rerun on this PC**. The unchanged Phase 2 SQL source and earlier execution evidence are recorded below. Docker/WSL are not required to run the current browser-local app.
+
+All completed phases now belong on `main`, retaining their individual historical commits. The Windows setup update is a separate follow-up commit. Authentication and shared cloud data are still future phases, continued one at a time at the owner's request.
+
+## Phase 2 validation — 0.3.0
 
 Executed 11 November 2026 against the owned local application and disposable PostgreSQL database, using fake records. The current application runs independently of Apper; its ChatGPT connection was successfully uninstalled at the owner's request.
 
