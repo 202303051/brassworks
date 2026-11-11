@@ -9,6 +9,7 @@ import {
   inventory,
   meltingMinutes,
   mutateState,
+  newRecordId,
   planActual,
   queryRecords,
   recovery,
@@ -45,6 +46,20 @@ test('stale edits are rejected even when timestamps are identical', () => {
   const first = mutateState(state, action, NOW).state;
   assert.equal(first.heats[0].recordVersion, 2);
   assert.throws(() => mutateState(first, action, NOW), /changed in another tab/);
+});
+
+test('phone HTTP preview generates a version-4 UUID without randomUUID', () => {
+  const random = { getRandomValues: (bytes) => bytes.fill(0) };
+  assert.equal(newRecordId(random), '00000000-0000-4000-8000-000000000000');
+});
+
+test('phone HTTP preview keeps secure UUIDs unique and rejects missing crypto', () => {
+  const random = { getRandomValues: (bytes) => crypto.getRandomValues(bytes) };
+  const ids = new Set(Array.from({ length: 100 }, () => newRecordId(random)));
+  assert.equal(ids.size, 100);
+  for (const id of ids)
+    assert.match(id, /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/);
+  assert.throws(() => newRecordId({}), /secure random values/);
 });
 
 test('new records receive distinct UUIDs with default creation options', () => {

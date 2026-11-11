@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const { join } = require('node:path');
+const { networkInterfaces } = require('node:os');
 const { chromium } = require('playwright');
 
 function installedBrowser() {
@@ -25,7 +26,11 @@ function installedBrowser() {
 
 const base = process.env.APP_BASE_URL || 'http://localhost:4173';
 const hostname = new URL(base).hostname;
-if (!['localhost', '127.0.0.1'].includes(hostname)) {
+const localAddresses = Object.values(networkInterfaces())
+  .flat()
+  .filter((item) => item.family === 'IPv4')
+  .map((item) => item.address);
+if (!['localhost', '127.0.0.1', ...localAddresses].includes(hostname)) {
   throw new Error('Run this test only against the owned Brassworks local demo.');
 }
 const GRADE = 'Free Cutting IS 319 / CZ121';
@@ -101,7 +106,7 @@ async function fillOutput(page, planId, count) {
     headless: true,
     args: ['--no-sandbox'],
     proxy: process.env.HTTPS_PROXY
-      ? { server: process.env.HTTPS_PROXY, bypass: 'localhost,127.0.0.1' }
+      ? { server: process.env.HTTPS_PROXY, bypass: `localhost,127.0.0.1,${hostname}` }
       : undefined,
   });
   const context = await browser.newContext({
@@ -112,7 +117,7 @@ async function fillOutput(page, planId, count) {
   });
   const externalRequests = [];
   await context.route('**/*', async (route) => {
-    if (['localhost', '127.0.0.1'].includes(new URL(route.request().url()).hostname)) {
+    if (new URL(route.request().url()).origin === new URL(base).origin) {
       return route.continue();
     }
     externalRequests.push(route.request().url());

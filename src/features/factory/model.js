@@ -305,12 +305,20 @@ export function validateState(state) {
   }
 }
 
-export function mutateState(
-  current,
-  action,
-  now = new Date().toISOString(),
-  makeId = () => crypto.randomUUID(),
-) {
+export function newRecordId(random = globalThis.crypto) {
+  if (typeof random?.randomUUID === 'function') return random.randomUUID();
+  if (typeof random?.getRandomValues !== 'function')
+    throw new Error(
+      'This browser does not provide secure random values. Try an up-to-date browser.',
+    );
+  const bytes = random.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6] & 15) | 64;
+  bytes[8] = (bytes[8] & 63) | 128;
+  const hex = Array.from(bytes, (value) => value.toString(16).padStart(2, '0')).join('');
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
+export function mutateState(current, action, now = new Date().toISOString(), makeId = newRecordId) {
   if (!action || typeof action !== 'object') throw new Error('Invalid action.');
   const state = structuredClone(current);
   if (action.type === 'master') {

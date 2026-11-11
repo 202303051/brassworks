@@ -1,4 +1,8 @@
-# Windows local setup — 0.3.1
+# Phone preview follow-up — 0.3.2
+
+Two regression tests cover secure UUID generation on local HTTP connections that omit `crypto.randomUUID`: the fallback sets the UUID version/variant bits, generates distinct IDs and rejects unavailable secure randomness. All 66 automated checks passed. The LAN browser run verified heat/receipt/plan/output creation and stock operations; a later development hot reload interrupted the long run, so its partial execution is not reported as a full pass. Final built-app regression results are recorded with the subsequent UI/photo-scanning version.
+
+## Windows local setup — 0.3.1
 
 Executed on 12 November 2026 on the Windows PC, using the project-local Node 24.22.1 runtime and fake browser records.
 

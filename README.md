@@ -1,6 +1,6 @@
 # Brassworks
 
-A standalone brass-factory web application. Version **0.3.1** adds Windows local setup to the completed Phase 0–2 application. The factory screens remain a browser-local demo until the authentication and data-connection phases.
+A standalone brass-factory web application. Version **0.3.2** adds Windows and phone-browser local setup to the completed Phase 0–2 application. The factory screens remain a browser-local demo until the authentication and data-connection phases.
 
 ## Run locally
 

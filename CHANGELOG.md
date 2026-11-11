@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.2 — Phone browser record creation
+
+- Generate secure version-4 UUIDs with `crypto.getRandomValues` when a phone's local HTTP connection does not expose `crypto.randomUUID`.
+- Keep unsupported browsers from falling back to insecure random IDs.
+- Add fallback/uniqueness regression tests and allow browser tests against this PC's own LAN address while still blocking other origins.
+
 ## 0.3.1 — Windows local setup
 
 - Put the completed Phase 0–2 history on `main`; use a separate commit for each future phase, one phase at a time.
