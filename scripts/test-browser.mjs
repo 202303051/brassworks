@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { setTimeout as delay } from 'node:timers/promises';
+import { stripVTControlCharacters } from 'node:util';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const url = 'http://127.0.0.1:4175';
@@ -41,7 +42,7 @@ try {
     if (serverFailure) throw serverFailure;
     try {
       const response = await fetch(url, { signal: AbortSignal.timeout(500) });
-      if (serverOutput.includes(url) && response.ok) {
+      if (stripVTControlCharacters(serverOutput).includes(url) && response.ok) {
         ready = true;
         break;
       }

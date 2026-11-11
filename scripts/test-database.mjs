@@ -34,6 +34,8 @@ const psqlArgs = [
   'ON_ERROR_STOP=1',
   '-U',
   'postgres',
+  '-h',
+  '127.0.0.1',
   '-d',
   'brassworks_test',
 ];
@@ -111,7 +113,9 @@ try {
   let ready = false;
   for (let attempt = 0; attempt < 60; attempt++) {
     try {
-      docker(['exec', container, 'pg_isready', '-U', 'postgres', '-d', 'brassworks_test']);
+      // The image's temporary initialization server accepts socket connections
+      // before creating the database. Only its final server listens on TCP.
+      docker([...psqlArgs, '-c', 'SELECT 1']);
       ready = true;
       break;
     } catch {

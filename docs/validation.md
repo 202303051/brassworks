@@ -38,6 +38,8 @@ The database command always creates and removes its own isolated container. It d
 
 The soft-delete failure was actually reproduced before its fix. The other findings were review, build or dependency-tool findings; they are not claims of successful attacks against a deployed service.
 
+Two low-severity test-tooling findings were reproduced in CI and corrected. P2-T001: colored Vite output prevented URL matching; the browser runner now removes terminal control sequences and is retested with forced color. P2-T002: PostgreSQL's temporary initialization socket accepted connections before the test database existed; readiness now requires an actual query over container-local TCP, which only the final server accepts. Both corrected runners are executed again locally and in CI. The application/database tests are retained.
+
 ## Defensive checks actually executed
 
 The SQL role matrix tests all five application roles against all ten public tables, including read/update boundaries and denied hard deletion. Additional checks cover inactive, unverified, banned, deleted and missing identities; Admin without AAL2; self-role escalation; audit forging/mutation; metadata spoofing; private counter access; invalid master types; soft-deleted visibility and restore; malformed labels; literal SQL text; Unicode; invalid dates, weights, chemistry and Hollow dimensions; linked record deletion; overconsumption; receipt changes and output group moves.
