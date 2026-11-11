@@ -1,61 +1,57 @@
 # Brassworks
 
-A responsive brass-factory demo built with Apper. Version 0.2.0.
+A standalone brass-factory web application. Version **0.3.0** adds the Phase 2 PostgreSQL database foundation. The factory screens remain a browser-local demo until the authentication and data-connection phases.
 
-Preview: https://preview--peak-brassworks-factory.apper.so
+## Run locally
 
-## Phase 1
+Install Node 24 LTS, then run:
 
-- Furnace heats, overnight melting time, multi-row raw charges and spectro with automatic/manual zinc balance.
+```sh
+npm ci
+npm run dev
+```
+
+Open the localhost URL printed by Vite. No environment file, builder account or plugin is needed. Source edits use Vite Fast Refresh. The app uses system fonts and makes no requests to a builder SDK or hosted font service.
+
+## Factory workflows
+
+- Furnace heats, overnight melting time, multi-row charges and spectro with automatic/manual zinc balance.
 - Billet receipts and available stock grouped by company, grade and size.
 - Round, Hexa, Octa and Hollow rod plans, dimensions, priorities and status transitions.
-- Finished production with linked/manual orders, billet consumption, scrap and recovery.
-- Complete create, record, edit and confirmed-delete flows for all four sections.
+- Finished production with linked/manual orders, matching billet consumption, scrap and recovery.
+- Create, detail, edit and confirmed-delete flows for all four sections.
 - Date/search filters, sorting, pagination, inline master additions, filtered CSV and print/PDF.
 - Browser-local persistence, transaction-safe stock updates across tabs and stale-edit protection.
 - Responsive phone/tablet/desktop layouts, dark mode and IST dates.
 
-This is a demo without login. Data stays in the current browser and is not shared between devices. Cloud database, real authentication, the 20-user access limit and production security belong to later phases. This Apper React web build does not produce Expo/Android/iOS binaries.
+The existing IndexedDB database name and storage structure are preserved. Data stays in the current browser profile and is not shared between devices. Reset demo replaces that browser's records and added master options; export anything you want to retain first.
 
-The original factory brief and detailed internal reports remain in Apper and are excluded from this public repository.
+## Phase 2 database
 
-## Run locally
+The `supabase/` directory contains migrations, sample data and executable SQL tests. The schema includes factory records, master lists, profiles, application configuration and an immutable audit log. Database triggers enforce stock integrity and the 20-active-user cap; row-level security defines the role permissions independently of the UI.
 
-Use Node 24 LTS:
+Start with [database setup](docs/database-setup.md) and [database design](docs/database-design.md). Migrations are not automatically applied by running the web app. No hosted Supabase project has been provisioned or connected by this version.
 
-```sh
-npm ci
-cp .env.example .env.local
-npm run dev
-```
-
-Open the localhost URL printed by Vite. Saved demo records survive refresh in a normal browser profile. Changes to the app source use Vite Fast Refresh. Reset demo replaces this browser's records and added master options.
-
-## Validate
+## Checks
 
 ```sh
-node scripts/check-phase-1.mjs
+npm run check
+npm test
 npm audit --audit-level=high
 npm run build
-```
-
-The checker runs scoped ESLint, Prettier, 62 Node tests and minimum 80% coverage thresholds for the imported business logic. The executed calculation/model/seed tests achieved 100% lines, 98.72% branches and 98% functions. This is not coverage of all UI or platform code.
-
-To run the browser scenarios against your local demo after starting Vite:
-
-```sh
 npx playwright install chromium
-APP_BASE_URL=http://localhost:5173 node tests/browser-demo.cjs
+npm run test:browser
+npm run test:database
 ```
 
-For an installed system Chromium, set CHROMIUM_PATH to its executable path. The suite uses fake data in an isolated browser context and only permits localhost or the owned Brassworks preview. It covers complete workflows, stock races, invalid input, exports, persistence, responsive layouts and reset.
+`check` runs source lint/format checks and 64 automated tests with an 80% minimum business-logic coverage threshold. The executed model/seed/date tests reached 100% lines, 98.72% branches and 98% functions; these figures do not measure all UI code. The 28 browser scenarios use the built app and fake data, including blocked external requests, stock races, exports and responsive layouts. Set `CHROMIUM_PATH` to an installed Chromium executable if preferred.
 
-## Calculations
+The database runner requires a running local Docker engine. It creates an isolated PostgreSQL 17 container with no published ports, runs the migrations, seed, SQL policy/constraint tests and concurrent-write cases, then removes the container. It accepts no remote database URL. Never apply the local auth test shim to a real Supabase project.
 
-Melting time rolls an earlier ready time into the next day. Charge is the sum of raw-material weights. Automatic Zn is 100 minus Cu, Pb, Fe and Sn. Available billets are receipts minus production consumption for the exact company/grade/size group. Recovery is rod kg divided by rod kg plus scrap/butt kg, multiplied by 100.
+Actual results, findings and remaining limits are recorded in [validation](docs/validation.md).
 
-Stock checks are browser-local demo safeguards. They must be enforced again in the future cloud database.
+## Scope and versions
 
-## Version workflow
+Authentication is Phase 3; connecting the UI to shared database records is Phase 4. The current delivery is React web and does not produce Expo, Android or iOS binaries.
 
-Commit and push every completed app version to this repository. Preserve history, use feature branches and pull requests, and verify the remote commit. Internal documents and environment values stay excluded. Continuous unattended Apper-to-GitHub mirroring is not enabled.
+GitHub is now the application source of truth; Apper has been disconnected and is no longer used for updates. Existing commits and tags are retained. See [versioning](docs/versioning.md) for branches, pull requests, tags and rollback. The original brief, previous internal reports, local environment values and credentials are excluded from this public repository.

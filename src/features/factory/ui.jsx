@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import ApperIcon from '@/components/ApperIcon';
+import Icon from '@/components/Icon';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
@@ -174,7 +174,7 @@ export function Confirm({
             disabled={pending}
             onClick={performConfirmation}
           >
-            {pending && <ApperIcon name="LoaderCircle" size={16} className="animate-spin" />}
+            {pending && <Icon name="LoaderCircle" size={16} className="animate-spin" />}
             {pending ? 'Working…' : actionLabel}
           </Button>
         </DialogFooter>
@@ -190,7 +190,7 @@ export function ResetDemoButton() {
   return (
     <>
       <Button variant="ghost" className="min-h-12 gap-2 px-3 text-xs" onClick={() => setOpen(true)}>
-        <ApperIcon name="RotateCcw" size={16} />
+        <Icon name="RotateCcw" size={16} />
         <span>Reset demo</span>
       </Button>
       <Confirm
@@ -277,7 +277,7 @@ export function RecordHeading({ title, eyebrow, description, children, back = '/
         className="mb-5 min-h-12 px-0 hover:bg-transparent hover:underline"
       >
         <Link to={back}>
-          <ApperIcon name="ArrowLeft" size={17} />
+          <Icon name="ArrowLeft" size={17} />
           {back === '/'
             ? 'Back to Home'
             : 'Back to ' +
@@ -390,11 +390,7 @@ export function FilterBar({ query, children }) {
       <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_180px_auto]">
         <label className="relative block">
           <span className="sr-only">Search records</span>
-          <ApperIcon
-            name="Search"
-            size={17}
-            className="absolute left-3 top-4 text-muted-foreground"
-          />
+          <Icon name="Search" size={17} className="absolute left-3 top-4 text-muted-foreground" />
           <input
             className={fieldClass + ' pl-10'}
             value={filters.q || ''}
@@ -418,7 +414,7 @@ export function FilterBar({ query, children }) {
           </select>
         </label>
         <Button variant="outline" className="min-h-12" onClick={clear}>
-          <ApperIcon name="FilterX" size={16} />
+          <Icon name="FilterX" size={16} />
           Clear filters
         </Button>
       </div>
@@ -473,7 +469,7 @@ export function FilterBar({ query, children }) {
             onClick={() => update('dir', filters.dir === 'asc' ? 'desc' : 'asc')}
           >
             {filters.dir === 'asc' ? 'Ascending' : 'Descending'}
-            <ApperIcon name="ArrowUpDown" size={14} />
+            <Icon name="ArrowUpDown" size={14} />
           </Button>
         </div>
       </div>
@@ -548,7 +544,7 @@ export function Pagination({ query }) {
 export function Empty({ title, createTo }) {
   return (
     <div className="rounded-lg border border-dashed border-border bg-card p-10 text-center">
-      <ApperIcon name="ClipboardList" size={30} className="mx-auto mb-3 text-muted-foreground" />
+      <Icon name="ClipboardList" size={30} className="mx-auto mb-3 text-muted-foreground" />
       <h2 className="font-heading text-2xl">{title}</h2>
       <p className="mt-2 text-sm text-muted-foreground">
         Try clearing the filters, or add your first matching record.
@@ -569,7 +565,7 @@ export function RecordLink({ entity, row, children }) {
       className="inline-flex min-h-12 items-center gap-1 font-semibold underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ring"
     >
       {children || 'View record'}
-      <ApperIcon name="ArrowUpRight" size={15} />
+      <Icon name="ArrowUpRight" size={15} />
     </Link>
   );
 }
@@ -705,11 +701,11 @@ export function ListActions({ entity, query }) {
         disabled={!data}
         onClick={() => exportRows(entity, query.rows, data)}
       >
-        <ApperIcon name="Download" size={16} />
+        <Icon name="Download" size={16} />
         Export CSV
       </Button>
       <Button variant="outline" className="min-h-12" onClick={() => window.print()}>
-        <ApperIcon name="Printer" size={16} />
+        <Icon name="Printer" size={16} />
         Print / PDF
       </Button>
       <Button
@@ -722,7 +718,7 @@ export function ListActions({ entity, query }) {
             .catch((e) => toast.error(message(e)))
         }
       >
-        <ApperIcon name="RefreshCw" size={16} />
+        <Icon name="RefreshCw" size={16} />
         Refresh
       </Button>
       <Button asChild className="min-h-12">
@@ -730,7 +726,7 @@ export function ListActions({ entity, query }) {
           to={routes[entity] + '/new'}
           state={{ returnTo: location.pathname + location.search }}
         >
-          <ApperIcon name="Plus" size={17} />
+          <Icon name="Plus" size={17} />
           {entity === 'heats'
             ? 'New heat'
             : entity === 'billets'

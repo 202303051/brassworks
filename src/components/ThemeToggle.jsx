@@ -4,8 +4,8 @@ import { Toggle } from '@/components/ui/toggle';
 import { cn } from '@/lib/utils';
 
 const OPTIONS = [
-  { value: 'light',  Icon: Sun,     label: 'Light mode' },
-  { value: 'dark',   Icon: Moon,    label: 'Dark mode' },
+  { value: 'light', Icon: Sun, label: 'Light mode' },
+  { value: 'dark', Icon: Moon, label: 'Dark mode' },
   { value: 'system', Icon: Monitor, label: 'System theme' },
 ];
 

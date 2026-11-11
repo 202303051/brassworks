@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import ApperIcon from '@/components/ApperIcon';
+import Icon from '@/components/Icon';
 import { Button } from '@/components/ui/button';
 
 export const route = { path: '/phase-guide', layout: 'public', access: 'public' };
@@ -9,14 +9,14 @@ const phases = [
   [
     '01',
     'Factory demo',
-    'Current phase',
+    'Complete',
     'Four sections, entry forms, calculations, inventory checks, filters and exports.',
   ],
   [
     '02',
     'Database',
-    'Not started',
-    'Cloud schema, database-enforced stock integrity and row-security tests.',
+    'Current phase',
+    'PostgreSQL migrations, database-enforced stock integrity and row-security tests.',
   ],
   [
     '03',
@@ -46,19 +46,20 @@ export default function PhaseGuide() {
     <div className="mx-auto max-w-5xl">
       <Button asChild variant="ghost" className="mb-5 min-h-12 px-0">
         <Link to="/">
-          <ApperIcon name="ArrowLeft" size={17} />
+          <Icon name="ArrowLeft" size={17} />
           Back to Home
         </Link>
       </Button>
       <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-        Build record / Phase 1
+        Build record / Phase 2
       </p>
       <h1 className="mt-3 font-heading text-5xl font-bold uppercase sm:text-6xl">
-        Test the factory flow.
+        Database foundation.
       </h1>
       <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground">
-        This phase is a browser-local demo with no login. Cloud sharing, production permissions and
-        native Android/iOS builds are not included in this Apper web phase.
+        The factory workflows still run as a browser-local demo with no login. This version adds
+        PostgreSQL migrations, stock safeguards and database tests in the source repository. Cloud
+        data connection and authentication arrive in later phases.
       </p>
       <section className="mt-7 rounded-lg border border-border bg-card p-5 sm:p-7">
         <h2 className="font-heading text-3xl font-semibold">Your test checklist</h2>
@@ -78,7 +79,7 @@ export default function PhaseGuide() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <ApperIcon name="Github" size={17} />
+            <Icon name="CodeXml" size={17} />
             Application source on GitHub
           </a>
         </Button>
@@ -89,7 +90,7 @@ export default function PhaseGuide() {
             key={index}
             className={
               'flex gap-4 border-b border-border p-5 last:border-b-0 ' +
-              (index === '01' ? 'bg-highlight/10' : '')
+              (index === '02' ? 'bg-highlight/10' : '')
             }
           >
             <span className="font-heading text-4xl font-semibold text-muted-foreground/60">
@@ -105,11 +106,10 @@ export default function PhaseGuide() {
           </section>
         ))}
       </div>
-      <p className="mt-6 text-sm font-semibold">
-        Phase 2 starts only after you reply “DONE, next phase”.
-      </p>
+      <p className="mt-6 text-sm font-semibold">Authentication is the next phase.</p>
       <p className="mt-3 text-xs leading-6 text-muted-foreground">
-        The original brief and detailed internal reports remain in the Apper project source.
+        Run the standalone app locally with npm install and npm run dev. No builder account is
+        required.
       </p>
     </div>
   );

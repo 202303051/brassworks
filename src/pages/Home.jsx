@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import ApperIcon from '@/components/ApperIcon';
+import Icon from '@/components/Icon';
 import { Button } from '@/components/ui/button';
 import { useFactory } from '@/features/factory/FactoryProvider';
 import { factoryToday, inventory } from '@/features/factory/model';
@@ -64,7 +64,7 @@ export default function Home() {
           >
             <div className="flex items-center justify-between">
               <span className="flex size-12 items-center justify-center rounded-lg bg-primary/10">
-                <ApperIcon name="Flame" size={26} />
+                <Icon name="Flame" size={26} />
               </span>
               <span className="font-heading text-4xl text-muted-foreground/50">01</span>
             </div>
@@ -77,7 +77,7 @@ export default function Home() {
             </p>
             <div className="mt-6 flex min-h-12 items-center justify-between border-t border-border pt-4">
               <span className="text-xs font-bold uppercase tracking-widest">Open furnace log</span>
-              <ApperIcon name="ArrowUpRight" size={22} />
+              <Icon name="ArrowUpRight" size={22} />
             </div>
           </Link>
           <Link
@@ -86,7 +86,7 @@ export default function Home() {
           >
             <div className="flex items-center justify-between">
               <span className="flex size-12 items-center justify-center rounded-lg bg-primary/10">
-                <ApperIcon name="Factory" size={26} />
+                <Icon name="Factory" size={26} />
               </span>
               <span className="font-heading text-4xl text-muted-foreground/50">02–04</span>
             </div>
@@ -101,7 +101,7 @@ export default function Home() {
               <span className="text-xs font-bold uppercase tracking-widest">
                 Open production sections
               </span>
-              <ApperIcon name="ArrowUpRight" size={22} />
+              <Icon name="ArrowUpRight" size={22} />
             </div>
           </Link>
         </div>
@@ -115,7 +115,7 @@ export default function Home() {
           <Button asChild variant="outline" className="mt-4 min-h-12">
             <Link to="/production/planning">
               Review rod planning
-              <ApperIcon name="ArrowRight" size={16} />
+              <Icon name="ArrowRight" size={16} />
             </Link>
           </Button>
         </div>

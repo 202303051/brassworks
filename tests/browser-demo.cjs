@@ -4,8 +4,8 @@ const { chromium } = require('playwright');
 
 const base = process.env.APP_BASE_URL || 'http://localhost:4173';
 const hostname = new URL(base).hostname;
-if (!['localhost', '127.0.0.1', 'preview--peak-brassworks-factory.apper.so'].includes(hostname)) {
-  throw new Error('Run this test only against the owned Brassworks local demo or preview.');
+if (!['localhost', '127.0.0.1'].includes(hostname)) {
+  throw new Error('Run this test only against the owned Brassworks local demo.');
 }
 const GRADE = 'Free Cutting IS 319 / CZ121';
 const COMPANY = 'Jamnagar Precision Components';
@@ -89,17 +89,14 @@ async function fillOutput(page, planId, count) {
     timezoneId: 'America/New_York',
     acceptDownloads: true,
   });
-  if (process.env.HTTPS_PROXY) {
-    await context.route('**/*', async (route) => {
-      if (['localhost', '127.0.0.1'].includes(new URL(route.request().url()).hostname))
-        return route.continue();
-      try {
-        await route.fulfill({ response: await context.request.fetch(route.request()) });
-      } catch {
-        await route.abort();
-      }
-    });
-  }
+  const externalRequests = [];
+  await context.route('**/*', async (route) => {
+    if (['localhost', '127.0.0.1'].includes(new URL(route.request().url()).hostname)) {
+      return route.continue();
+    }
+    externalRequests.push(route.request().url());
+    await route.abort();
+  });
   const page = await context.newPage();
   const errors = [];
   const dialogs = [];
@@ -502,6 +499,9 @@ async function fillOutput(page, planId, count) {
         assert.equal(state.masters.companies.includes('=1+1'), false);
       },
     );
+    await check('standalone workflows need no external service or hosted assets', async () => {
+      assert.deepEqual(externalRequests, []);
+    });
     assert.deepEqual(errors, []);
     console.log(JSON.stringify({ total: checks.length, checks, pageErrors: errors }, null, 2));
     if (process.env.RESULT_PATH)

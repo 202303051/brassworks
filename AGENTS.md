@@ -4,7 +4,7 @@
 - Preserve existing commits. Never force-push or overwrite unrelated work.
 - Use clear conventional commit messages. Use feature branches and pull requests for subsequent changes to main.
 - Update CHANGELOG.md for app versions and verify the remote commit before reporting that a version is saved.
-- Keep the Apper source and the GitHub application source aligned for each version.
-- The repository is public. Keep the original factory brief and detailed internal reports in Apper; exclude environment values, credentials and signing material.
-- Run checks appropriate to the change. Current demo checks: node scripts/check-phase-1.mjs and npm run build. Browser scenarios: node tests/browser-demo.cjs against the owned local demo or preview.
-- Do not claim that continuous synchronization is enabled until an actual mechanism has been configured and verified.
+- The owner removed Apper. GitHub is the application source of truth; the application must run locally without platform SDKs or accounts.
+- The repository is public. Exclude the original factory brief, detailed internal reports, local environment values, credentials and signing material. Publish safe setup instructions and validation summaries.
+- Run checks appropriate to the change: npm run check, npm run build, npm run test:database and the local browser scenarios. Database tests must use an isolated disposable database and fake data.
+- Phase 2 prepares the database. Cloud connection and authentication remain later phases; preserve browser-local demo workflows in the meantime.

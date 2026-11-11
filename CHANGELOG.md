@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0 — Database and standalone application
+
+- Remove the Apper connection, runtime SDK/CDN, template authentication and unused store/components; run directly with Vite.
+- Preserve all four factory demo workflows and the existing local data storage structure.
+- Replace the full icon namespace with an explicit icon registry and use system fonts without external requests.
+- Add PostgreSQL/Supabase schema migrations, stock views, transaction-safe stock/user-cap triggers, audit and role policies.
+- Add realistic staging seed data, isolated SQL/concurrency tests and public database setup/design guides.
+- Pin application/tool dependencies, add repeatable local/CI checks and fix the minimatch development advisory.
+- Keep authentication and shared UI/database connection for Phases 3 and 4.
+
+The app is still a browser-local web demo. This version does not provision a hosted database or deliver native mobile binaries. See docs/validation.md for actual checks and deployment evidence.
+
 ## 0.2.0 — Phase 1 factory demo
 
 - Implement all four factory sections with complete record workflows.

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "concurrent activation admits one user into the twentieth slot",
+    "setup": "INSERT INTO auth.users(id,email,email_confirmed_at)\nSELECT ('91000000-0000-0000-0000-' || lpad(n::text,12,'0'))::uuid, 'race-'||n||'@example.test', now() FROM generate_series(1,21)n;\nINSERT INTO public.profiles(id,full_name,role,is_active)\nSELECT ('91000000-0000-0000-0000-' || lpad(n::text,12,'0'))::uuid, 'Race User '||n,\nCASE WHEN n=1 THEN 'admin' ELSE 'viewer' END, n<=19 FROM generate_series(1,21)n;",
+    "transactions": [
+      "BEGIN;\nSET LOCAL ROLE authenticated;\nSELECT set_config('request.jwt.claims', '{\"sub\":\"91000000-0000-0000-0000-000000000001\",\"aal\":\"aal2\"}', true);\nUPDATE public.profiles SET is_active=true WHERE id='91000000-0000-0000-0000-000000000020';\nSELECT pg_sleep(1);\nCOMMIT;",
+      "BEGIN;\nSET LOCAL ROLE authenticated;\nSELECT set_config('request.jwt.claims', '{\"sub\":\"91000000-0000-0000-0000-000000000001\",\"aal\":\"aal2\"}', true);\nUPDATE public.profiles SET is_active=true WHERE id='91000000-0000-0000-0000-000000000021';\nSELECT pg_sleep(1);\nCOMMIT;"
+    ],
+    "expectedError": "At most 20 active users",
+    "verify": "SELECT json_build_object('ok',\n(SELECT count(*)=20 FROM public.profiles WHERE is_active AND deleted_at IS NULL)\nAND (SELECT count(*)=1 FROM public.profiles WHERE id IN ('91000000-0000-0000-0000-000000000020','91000000-0000-0000-0000-000000000021') AND is_active)\nAND (SELECT active_users=20 FROM private.user_capacity),\n'activeUsers',(SELECT count(*) FROM public.profiles WHERE is_active AND deleted_at IS NULL));"
+  },
+  {
+    "name": "concurrent production cannot consume the same final billet twice",
+    "setup": "INSERT INTO public.master_lists(id,type,name) VALUES\n('80000000-0000-0000-0000-000000000001','company','Race Brass Company'),\n('80000000-0000-0000-0000-000000000002','grade','Race CZ121'),\n('80000000-0000-0000-0000-000000000003','billet_size','Race 100mm x 600mm');\nINSERT INTO public.billet_entries(id,entry_date,custom_heat_no,company_id,grade_id,size_id,billet_count,total_weight_kg)\nVALUES('81000000-0000-0000-0000-000000000001',CURRENT_DATE,'RACE-HEAT','80000000-0000-0000-0000-000000000001','80000000-0000-0000-0000-000000000002','80000000-0000-0000-0000-000000000003',1,10);",
+    "transactions": [
+      "BEGIN;\nSET LOCAL ROLE authenticated;\nSELECT set_config('request.jwt.claims', '{\"sub\":\"91000000-0000-0000-0000-000000000001\",\"aal\":\"aal2\"}', true);\nINSERT INTO public.rod_production(id,entry_date,company_id,grade_id,size_id,billets_used,actual_weight_kg,scrap_weight_kg,rod_type,length_mm,outer_mm,dimension) VALUES('82000000-0000-0000-0000-000000000001',CURRENT_DATE,'80000000-0000-0000-0000-000000000001','80000000-0000-0000-0000-000000000002','80000000-0000-0000-0000-000000000003',1,9,1,'Round',3000,20,'Diameter');\nSELECT pg_sleep(1);\nCOMMIT;",
+      "BEGIN;\nSET LOCAL ROLE authenticated;\nSELECT set_config('request.jwt.claims', '{\"sub\":\"91000000-0000-0000-0000-000000000001\",\"aal\":\"aal2\"}', true);\nINSERT INTO public.rod_production(id,entry_date,company_id,grade_id,size_id,billets_used,actual_weight_kg,scrap_weight_kg,rod_type,length_mm,outer_mm,dimension) VALUES('82000000-0000-0000-0000-000000000002',CURRENT_DATE,'80000000-0000-0000-0000-000000000001','80000000-0000-0000-0000-000000000002','80000000-0000-0000-0000-000000000003',1,9,1,'Round',3000,20,'Diameter');\nSELECT pg_sleep(1);\nCOMMIT;"
+    ],
+    "expectedError": "Billet consumption exceeds available stock",
+    "verify": "SELECT json_build_object('ok',\n(SELECT count(*)=1 FROM public.rod_production WHERE company_id='80000000-0000-0000-0000-000000000001')\nAND (SELECT available_billets=0 FROM private.stock_balances WHERE company_id='80000000-0000-0000-0000-000000000001')\nAND (SELECT available_billets=0 FROM public.billet_stock WHERE company_id='80000000-0000-0000-0000-000000000001'),\n'outputs',(SELECT count(*) FROM public.rod_production WHERE company_id='80000000-0000-0000-0000-000000000001'),\n'availableBillets',(SELECT available_billets FROM private.stock_balances WHERE company_id='80000000-0000-0000-0000-000000000001'));"
+  }
+]
