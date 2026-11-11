@@ -101,10 +101,16 @@ export function Field({ label, id, error, hint, required, children }) {
   );
 }
 
-export function FormPanel({ step, title, description, children }) {
+export function FormPanel({ step, title, description, children, compact = false, className = '' }) {
   return (
-    <section className="rounded-lg border border-border bg-card p-5 sm:p-7">
-      <div className="mb-5 flex items-start gap-3">
+    <section
+      className={
+        'rounded-lg border border-border bg-card ' +
+        (compact ? 'p-4 sm:p-5 ' : 'p-5 sm:p-7 ') +
+        className
+      }
+    >
+      <div className={(compact ? 'mb-4 ' : 'mb-5 ') + 'flex items-start gap-3'}>
         {step && (
           <span className="font-heading text-3xl font-semibold text-muted-foreground/50">
             {step}
@@ -268,13 +274,22 @@ export function DepartmentTabs() {
   );
 }
 
-export function RecordHeading({ title, eyebrow, description, children, back = '/' }) {
+export function RecordHeading({
+  title,
+  eyebrow,
+  description,
+  children,
+  back = '/',
+  compact = false,
+}) {
   return (
-    <div className="mb-7">
+    <div className={compact ? 'mb-4' : 'mb-7'}>
       <Button
         asChild
         variant="ghost"
-        className="mb-5 min-h-12 px-0 hover:bg-transparent hover:underline"
+        className={
+          (compact ? 'mb-1 ' : 'mb-5 ') + 'min-h-12 px-0 hover:bg-transparent hover:underline'
+        }
       >
         <Link to={back}>
           <Icon name="ArrowLeft" size={17} />
@@ -290,19 +305,41 @@ export function RecordHeading({ title, eyebrow, description, children, back = '/
                     : 'Billets')}
         </Link>
       </Button>
-      <div className="flex flex-wrap items-end justify-between gap-5">
+      <div className={'flex flex-wrap items-end justify-between ' + (compact ? 'gap-3' : 'gap-5')}>
         <div className="min-w-0">
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
             {eyebrow}
           </p>
-          <h1 className="mt-2 break-words font-heading text-5xl font-bold uppercase sm:text-6xl">
+          <h1
+            className={
+              'mt-2 break-words font-heading font-bold uppercase ' +
+              (compact ? 'text-3xl sm:text-5xl' : 'text-5xl sm:text-6xl')
+            }
+          >
             {title}
           </h1>
           {description && (
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground">{description}</p>
+            <p
+              className={
+                (compact ? 'mt-1 leading-6 ' : 'mt-3 leading-7 ') +
+                'max-w-2xl text-sm text-muted-foreground'
+              }
+            >
+              {description}
+            </p>
           )}
         </div>
-        <div className="flex flex-wrap gap-2">{children}</div>
+        {children && (
+          <div
+            className={
+              compact
+                ? 'grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap'
+                : 'flex flex-wrap gap-2'
+            }
+          >
+            {children}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -346,7 +383,7 @@ export function useRecordQuery(entity) {
   };
 }
 
-export function FilterBar({ query, children }) {
+export function FilterBar({ query, children, compact = false }) {
   const { filters, update, clear } = query;
   const sortOptions = {
     heats: [
@@ -386,9 +423,16 @@ export function FilterBar({ query, children }) {
   const invalid =
     filters.date === 'custom' && filters.from && filters.to && filters.from > filters.to;
   return (
-    <div className="mb-5 rounded-lg border border-border bg-card p-4">
-      <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_180px_auto]">
-        <label className="relative block">
+    <div
+      className={'rounded-lg border border-border bg-card ' + (compact ? 'mb-4 p-3' : 'mb-5 p-4')}
+    >
+      <div
+        className={
+          'grid md:grid-cols-[minmax(0,1fr)_180px_auto] ' +
+          (compact ? 'grid-cols-2 gap-2' : 'gap-3')
+        }
+      >
+        <label className={'relative block ' + (compact ? 'col-span-2 md:col-span-1' : '')}>
           <span className="sr-only">Search records</span>
           <Icon name="Search" size={17} className="absolute left-3 top-4 text-muted-foreground" />
           <input
@@ -445,7 +489,15 @@ export function FilterBar({ query, children }) {
           </Field>
         </div>
       )}
-      {children && <div className="mt-3 flex flex-wrap gap-3">{children}</div>}
+      {children && (
+        <div
+          className={
+            compact ? 'mt-2 grid grid-cols-2 gap-2 [&>label]:min-w-0' : 'mt-3 flex flex-wrap gap-3'
+          }
+        >
+          {children}
+        </div>
+      )}
       <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
         <span>
           {query.rows.length} matching record{query.rows.length === 1 ? '' : 's'}

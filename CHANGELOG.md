@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.3 — Organized furnace workspace
+
+- Use compact three-column summaries, paired filters and a smaller furnace heading/action area.
+- Organize heat cards with clear identity/status, paired charge/melting metrics and a single action row; use two card columns on wide screens.
+- Keep material and chemistry breakdowns expandable, with accessible labels for icon actions.
+- Group heat entry fields in a compact grid and place charge/spectro panels side by side on desktop, retaining 48 px controls.
+
 ## 0.3.2 — Phone browser record creation
 
 - Generate secure version-4 UUIDs with `crypto.getRandomValues` when a phone's local HTTP connection does not expose `crypto.randomUUID`.

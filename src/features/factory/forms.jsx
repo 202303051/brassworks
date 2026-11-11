@@ -197,8 +197,9 @@ export function FormFrame({ entity, model, title, children }) {
       </div>
     );
   return (
-    <div className="mx-auto max-w-5xl">
+    <div className={'mx-auto ' + (entity === 'heats' ? 'max-w-6xl' : 'max-w-5xl')}>
       <RecordHeading
+        compact={entity === 'heats'}
         title={title}
         back={model.returnTo}
         eyebrow={model.id ? 'Edit factory record' : 'New factory record'}
@@ -216,9 +217,14 @@ export function FormFrame({ entity, model, title, children }) {
   );
 }
 
-export function FormFooter({ entity, model }) {
+export function FormFooter({ entity, model, className = '' }) {
   return (
-    <div className="sticky bottom-0 z-10 mt-6 border-t border-border bg-background/95 py-4 backdrop-blur">
+    <div
+      className={
+        'sticky bottom-0 z-10 mt-6 border-t border-border bg-background/95 py-4 backdrop-blur ' +
+        className
+      }
+    >
       {model.failure && (
         <div
           role="alert"

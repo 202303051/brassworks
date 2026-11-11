@@ -7,19 +7,21 @@ import { useFactory } from './FactoryProvider';
 import { PLAN_STATUSES } from './model';
 import { Badge, Confirm, message, recordTitle, routes } from './ui';
 
-export function DeleteRecord({ entity, row, onDeleted }) {
+export function DeleteRecord({ entity, row, onDeleted, compact = false }) {
   const { save } = useFactory();
   const [open, setOpen] = useState(false);
   return (
     <>
       <Button
         variant="ghost"
-        className="min-h-12 text-destructive hover:text-destructive"
+        className={
+          'min-h-12 text-destructive hover:text-destructive ' + (compact ? 'min-w-12 px-2' : '')
+        }
         onClick={() => setOpen(true)}
         aria-label={'Delete ' + recordTitle(entity, row)}
       >
         <Icon name="Trash2" size={16} />
-        <span>Delete</span>
+        <span className={compact ? 'sr-only' : undefined}>Delete</span>
       </Button>
       <Confirm
         open={open}
@@ -38,16 +40,21 @@ export function DeleteRecord({ entity, row, onDeleted }) {
   );
 }
 
-export function EditRecord({ entity, row }) {
+export function EditRecord({ entity, row, compact = false }) {
   const location = useLocation();
   return (
-    <Button variant="outline" asChild className="min-h-12">
+    <Button
+      variant="outline"
+      asChild
+      className={'min-h-12 ' + (compact ? 'min-w-12 border-transparent bg-transparent px-2' : '')}
+    >
       <Link
         to={routes[entity] + '/' + row.id + '/edit'}
+        aria-label={compact ? 'Edit ' + recordTitle(entity, row) : undefined}
         state={{ returnTo: location.state?.returnTo || location.pathname + location.search }}
       >
         <Icon name="Pencil" size={15} />
-        Edit
+        <span className={compact ? 'sr-only' : undefined}>Edit</span>
       </Link>
     </Button>
   );

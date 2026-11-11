@@ -41,15 +41,26 @@ const rowTone = (status) =>
         ? 'bg-warning-muted/60'
         : '';
 
-function Metrics({ values }) {
+function Metrics({ values, compact = false }) {
   return (
-    <div className="mb-6 flex flex-wrap divide-x divide-border rounded-lg border border-border bg-card py-5">
+    <div
+      className={
+        compact
+          ? 'mb-4 grid grid-cols-3 divide-x divide-border rounded-lg border border-border bg-card py-3'
+          : 'mb-6 flex flex-wrap divide-x divide-border rounded-lg border border-border bg-card py-5'
+      }
+    >
       {values.map(([label, value, unit]) => (
-        <div key={label} className="min-w-36 flex-1 px-5">
+        <div key={label} className={compact ? 'min-w-0 px-3' : 'min-w-36 flex-1 px-5'}>
           <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
             {label}
           </p>
-          <p className="mt-2 font-heading text-3xl font-semibold tabular-nums">
+          <p
+            className={
+              (compact ? 'mt-1 text-2xl sm:text-3xl ' : 'mt-2 text-3xl ') +
+              'font-heading font-semibold tabular-nums'
+            }
+          >
             {value}
             <span className="ml-1.5 text-base font-medium text-muted-foreground">{unit}</span>
           </p>
@@ -59,11 +70,11 @@ function Metrics({ values }) {
   );
 }
 
-function Actions({ entity, row }) {
+function Actions({ entity, row, compact = false }) {
   return (
     <div className="flex flex-wrap gap-1">
-      <EditRecord entity={entity} row={row} />
-      <DeleteRecord entity={entity} row={row} />
+      <EditRecord entity={entity} row={row} compact={compact} />
+      <DeleteRecord entity={entity} row={row} compact={compact} />
     </div>
   );
 }
@@ -80,6 +91,7 @@ export function FurnaceLog() {
     <PullRefresh>
       <div className="print:hidden">
         <RecordHeading
+          compact
           title="Furnace operations"
           eyebrow="Section 01 / Furnace department"
           description="Track the melt, charge and final composition together."
@@ -90,6 +102,7 @@ export function FurnaceLog() {
       <PageState>
         <div className="print:hidden">
           <Metrics
+            compact
             values={[
               ['Matching heats', number(query.rows.length, 0), ''],
               [
@@ -100,7 +113,7 @@ export function FurnaceLog() {
               ['Average melt', number(average, 0), 'min'],
             ]}
           />
-          <FilterBar query={query}>
+          <FilterBar query={query} compact>
             <FilterSelect
               label="Grades"
               options={data?.masters.grades || []}
@@ -117,16 +130,14 @@ export function FurnaceLog() {
           {!query.rows.length ? (
             <Empty title="No matching heats" createTo="/furnace/new" />
           ) : (
-            <div className="space-y-3">
+            <div className="grid items-start gap-3 xl:grid-cols-2">
               {query.pageRows.map((row) => (
                 <article
                   key={row.id}
-                  className={
-                    'overflow-hidden rounded-lg border border-border ' + rowTone(row.status)
-                  }
+                  className="min-w-0 overflow-hidden rounded-lg border border-border bg-card"
                 >
-                  <div className="grid items-center gap-4 p-4 lg:grid-cols-[1.2fr_1fr_1fr_auto]">
-                    <div>
+                  <div className="flex items-start justify-between gap-3 px-4 pt-3 pb-2">
+                    <div className="min-w-0">
                       <p className="text-xs text-muted-foreground">
                         {displayDate(row.date)} · {row.shift} · {row.furnaceNo}
                       </p>
@@ -135,35 +146,58 @@ export function FurnaceLog() {
                       </RecordLink>
                       <p className="text-xs text-muted-foreground">{row.grade}</p>
                     </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground">Charge / melting time</p>
-                      <p className="mt-1 text-sm font-semibold">
-                        {number(totalCharge(row.materials))} kg ·{' '}
-                        {meltingMinutes(row.startTime, row.readyTime)} min
-                      </p>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {row.startTime} → {row.readyTime} IST
-                      </p>
-                    </div>
-                    <div>
+                    <div className="shrink-0 pt-1">
                       <Badge tone={row.status === 'Pass' ? 'good' : 'warning'}>{row.status}</Badge>
-                      <p className="mt-2 text-xs text-muted-foreground">
-                        Cu {number(row.cu)}% · Zn {number(row.zn)}%
-                      </p>
                     </div>
-                    <Actions entity="heats" row={row} />
                   </div>
-                  <button
-                    type="button"
-                    className="flex min-h-12 w-full items-center justify-between border-t border-border px-4 text-left text-xs font-bold hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
-                    aria-expanded={expanded === row.id}
-                    onClick={() => setExpanded(expanded === row.id ? null : row.id)}
-                  >
-                    <span>Materials & spectro detail</span>
-                    <span aria-hidden="true">{expanded === row.id ? '−' : '+'}</span>
-                  </button>
+                  <dl className="mx-4 my-2 grid grid-cols-2 divide-x divide-border rounded-md bg-muted/60 py-2">
+                    <div className="px-3">
+                      <dt className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                        Charge weight
+                      </dt>
+                      <dd className="mt-1 font-heading text-2xl font-semibold tabular-nums">
+                        {number(totalCharge(row.materials))}
+                        <span className="ml-1 text-sm text-muted-foreground">kg</span>
+                      </dd>
+                    </div>
+                    <div className="px-3">
+                      <dt className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                        Melting time
+                      </dt>
+                      <dd className="mt-1 font-heading text-2xl font-semibold tabular-nums">
+                        {meltingMinutes(row.startTime, row.readyTime)}
+                        <span className="ml-1 text-sm text-muted-foreground">min</span>
+                      </dd>
+                    </div>
+                  </dl>
+                  <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 pb-3 pt-1 text-xs text-muted-foreground">
+                    <span>
+                      {row.startTime} → {row.readyTime} IST
+                    </span>
+                    <span>
+                      Cu <strong className="text-foreground">{number(row.cu)}%</strong> · Zn{' '}
+                      <strong className="text-foreground">{number(row.zn)}%</strong>
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-1 border-t border-border px-2">
+                    <button
+                      type="button"
+                      className="flex min-h-12 min-w-0 items-center gap-2 px-2 text-left text-xs font-bold hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
+                      aria-expanded={expanded === row.id}
+                      aria-label="Materials & spectro detail"
+                      aria-controls={'heat-detail-' + row.id}
+                      onClick={() => setExpanded(expanded === row.id ? null : row.id)}
+                    >
+                      <span>Materials & spectro</span>
+                      <span aria-hidden="true">{expanded === row.id ? '−' : '+'}</span>
+                    </button>
+                    <Actions entity="heats" row={row} compact />
+                  </div>
                   {expanded === row.id && (
-                    <div className="grid gap-5 border-t border-border bg-card p-5 sm:grid-cols-2">
+                    <div
+                      id={'heat-detail-' + row.id}
+                      className="grid gap-4 border-t border-border bg-muted/20 p-4 sm:grid-cols-2 xl:grid-cols-1"
+                    >
                       <div>
                         <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                           Charge breakdown
@@ -179,11 +213,16 @@ export function FurnaceLog() {
                         <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                           Final spectro (%)
                         </h2>
-                        <div className="mt-3 flex flex-wrap gap-3">
+                        <div className="mt-3 grid grid-cols-5 gap-1.5">
                           {['cu', 'zn', 'pb', 'fe', 'sn'].map((element) => (
-                            <span key={element} className="rounded bg-muted px-3 py-2 text-xs">
-                              <span className="uppercase">{element}</span>{' '}
-                              <strong>{number(row[element], 4)}</strong>
+                            <span
+                              key={element}
+                              className="rounded border border-border bg-background px-2 py-2 text-xs"
+                            >
+                              <span className="mb-1 block uppercase text-muted-foreground">
+                                {element}
+                              </span>
+                              <strong className="tabular-nums">{number(row[element], 4)}</strong>
                             </span>
                           ))}
                         </div>

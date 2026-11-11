@@ -72,10 +72,10 @@ export default function FurnaceForm() {
               throw new Error('Confirm the duplicate heat number before saving.');
           })
         }
-        className="space-y-5"
+        className="grid gap-4 lg:grid-cols-2"
       >
-        <FormPanel step="01" title="Heat & liquid timing">
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <FormPanel compact className="lg:col-span-2" step="01" title="Heat & liquid timing">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
             <InputField model={model} name="date" label="Heat date" type="date" />
             <ChoiceField model={model} name="shift" label="Shift" options={['Day', 'Night']} />
             <InputField
@@ -99,7 +99,7 @@ export default function FurnaceForm() {
               hint="An earlier clock time means the following day."
             />
           </div>
-          <div className="mt-5 rounded-md bg-muted px-4 py-3 text-sm">
+          <div className="mt-3 rounded-md bg-muted px-3 py-2 text-sm">
             <span className="text-muted-foreground">Melting time </span>
             <strong>
               {minutes == null ? '—' : Math.floor(minutes / 60) + 'h ' + (minutes % 60) + 'm'}
@@ -121,15 +121,16 @@ export default function FurnaceForm() {
           )}
         </FormPanel>
         <FormPanel
+          compact
           step="02"
           title="Raw material charge"
           description="Add each material and its measured weight."
         >
-          <div className="space-y-4">
+          <div className="space-y-3">
             {form.materials.map((row, index) => (
               <div
                 key={index}
-                className="grid items-end gap-3 rounded-md border border-border p-4 sm:grid-cols-[1fr_160px_auto]"
+                className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3 rounded-md border border-border p-3 [&>div:first-child]:col-span-2 sm:grid-cols-[minmax(0,1fr)_120px_auto] sm:[&>div:first-child]:col-span-1 lg:grid-cols-[minmax(0,1fr)_auto] lg:[&>div:first-child]:col-span-2 xl:grid-cols-[minmax(0,1fr)_100px_auto] xl:[&>div:first-child]:col-span-1"
               >
                 <Field
                   label={'Material ' + (index + 1)}
@@ -203,8 +204,8 @@ export default function FurnaceForm() {
             </p>
           </div>
         </FormPanel>
-        <FormPanel step="03" title="Final spectro & grade">
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <FormPanel compact step="03" title="Final spectro & grade">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {['cu', 'pb', 'fe', 'sn'].map((key) => (
               <InputField
                 key={key}
@@ -262,7 +263,7 @@ export default function FurnaceForm() {
             </p>
           </div>
         </FormPanel>
-        <FormFooter entity="heats" model={model} />
+        <FormFooter entity="heats" model={model} className="lg:col-span-2" />
       </form>
     </FormFrame>
   );
