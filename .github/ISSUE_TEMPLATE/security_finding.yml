@@ -1,0 +1,25 @@
+name: Sanitized security finding
+description: Record non-sensitive metadata after private disclosure
+title: "[Security] "
+body:
+  - type: markdown
+    attributes:
+      value: "Send exploit details privately to the repository owner or through GitHub private vulnerability reporting. Never attach credentials or production records here."
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Critical
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Sanitized summary and affected phase
+      description: Include the private tracking reference and remediation status without exploit material.
+    validations:
+      required: true

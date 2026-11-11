@@ -1,0 +1,25 @@
+name: Bug report
+description: Report a reproducible Brassworks defect
+title: "[Bug] "
+body:
+  - type: input
+    id: phase
+    attributes:
+      label: Phase and Apper version
+      placeholder: Phase 0, latest preview
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Include expected and actual behavior. Use fake data.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Device and environment
+      description: Browser, screen size, operating system and relevant error text.
+    validations:
+      required: true

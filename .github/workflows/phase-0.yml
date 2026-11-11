@@ -1,0 +1,19 @@
+name: Phase 0 scaffold checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  scaffold:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Scoped lint, format, tests and coverage
+        run: node scripts/check-phase-0.mjs
