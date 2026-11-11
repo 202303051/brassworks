@@ -6,5 +6,5 @@
 - Update CHANGELOG.md for app versions and verify the remote commit before reporting that a version is saved.
 - Keep the Apper source and the GitHub application source aligned for each version.
 - The repository is public. Keep the original factory brief and detailed internal reports in Apper; exclude environment values, credentials and signing material.
-- Run checks appropriate to the change. The current scaffold check is node scripts/check-phase-0.mjs.
+- Run checks appropriate to the change. Current demo checks: node scripts/check-phase-1.mjs and npm run build. Browser scenarios: node tests/browser-demo.cjs against the owned local demo or preview.
 - Do not claim that continuous synchronization is enabled until an actual mechanism has been configured and verified.

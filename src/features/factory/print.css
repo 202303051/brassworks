@@ -1,0 +1,23 @@
+@media print {
+  :root,
+  .dark {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.15 0 0);
+    --muted-foreground: oklch(0.35 0 0);
+    --border: oklch(0.75 0 0);
+  }
+
+  @page {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
+
+  [data-apper-widget] {
+    display: none !important;
+  }
+}
