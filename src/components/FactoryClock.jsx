@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import ApperIcon from '@/components/ApperIcon';
+import Icon from '@/components/Icon';
 import { formatFactoryDate, formatFactoryTime } from '@/lib/factory-time';
 
 export default function FactoryClock() {
@@ -23,7 +23,7 @@ export default function FactoryClock() {
       aria-label="Current factory date and time in Indian Standard Time"
       className="flex flex-wrap items-center gap-2 text-xs font-semibold tabular-nums text-muted-foreground"
     >
-      <ApperIcon name="Clock3" size={15} />
+      <Icon name="Clock3" size={15} />
       <span>{formatFactoryDate(instant)}</span>
       <span aria-hidden="true">/</span>
       <span>{formatFactoryTime(instant)} IST</span>

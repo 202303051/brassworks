@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import ApperIcon from '@/components/ApperIcon';
+import Icon from '@/components/Icon';
 
 export const route = { path: '/privacy', layout: 'public', access: 'public' };
 
 const notes = [
   [
     'Browser-local demo',
-    'The four factory sections use sample records and data entered in this browser. They are not shared with other phones or saved to a cloud factory database in Phase 1. Use fake data for testing.',
+    'The four factory sections use sample records and data entered in this browser. They are not shared with other phones or saved to a cloud factory database in this demo. Use fake data for testing.',
   ],
   [
     'Persistence and reset',
@@ -18,16 +18,16 @@ const notes = [
     'CSV downloads and printing are generated from the records and filters you select. Exported files remain on the device where you save them.',
   ],
   [
-    'Hosting and fonts',
-    'Apper provides hosting and its runtime SDK and may process technical access logs under its terms. Google Fonts delivers the heading and body fonts. System fonts are used when those requests fail.',
+    'Standalone application',
+    'The app runs from your local development server or your chosen web host. It uses system fonts and does not load a builder SDK or make requests to a builder service.',
   ],
   [
     'Account access',
-    'The demo screens require no login. Real invitations, user roles, the 20-active-user limit, audit controls and production session security belong to later phases.',
+    'The demo screens require no login. The database source defines row-security policies, the 20-active-user limit and audit controls. Connecting real invitations, login and shared data to this demo belongs to later phases.',
   ],
   [
     'Source and internal documents',
-    'The owner selected a public GitHub repository for application code. The original factory brief and detailed internal project reports remain in Apper and are excluded from the public source.',
+    'The owner selected a public GitHub repository for application code. The original factory brief and prior detailed internal project reports are excluded from the public source. Application source, setup instructions and database tests are saved on GitHub.',
   ],
 ];
 
@@ -36,12 +36,12 @@ export default function Privacy() {
     <div className="mx-auto max-w-3xl">
       <Button asChild variant="ghost" className="mb-6 min-h-12 px-0">
         <Link to="/">
-          <ApperIcon name="ArrowLeft" size={17} />
+          <Icon name="ArrowLeft" size={17} />
           Back to Home
         </Link>
       </Button>
       <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-        Data & access / Phase 1
+        Data & access / Phase 2
       </p>
       <h1 className="mt-3 font-heading text-5xl font-bold uppercase sm:text-6xl">
         Where your demo data lives.

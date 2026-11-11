@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import ApperIcon from '@/components/ApperIcon';
+import Icon from '@/components/Icon';
 import { useFactory } from './FactoryProvider';
 import { PLAN_STATUSES } from './model';
 import { Badge, Confirm, message, recordTitle, routes } from './ui';
@@ -18,7 +18,7 @@ export function DeleteRecord({ entity, row, onDeleted }) {
         onClick={() => setOpen(true)}
         aria-label={'Delete ' + recordTitle(entity, row)}
       >
-        <ApperIcon name="Trash2" size={16} />
+        <Icon name="Trash2" size={16} />
         <span>Delete</span>
       </Button>
       <Confirm
@@ -46,7 +46,7 @@ export function EditRecord({ entity, row }) {
         to={routes[entity] + '/' + row.id + '/edit'}
         state={{ returnTo: location.state?.returnTo || location.pathname + location.search }}
       >
-        <ApperIcon name="Pencil" size={15} />
+        <Icon name="Pencil" size={15} />
         Edit
       </Link>
     </Button>
@@ -92,7 +92,7 @@ export function PlanStatus({ row }) {
         >
           {status}
         </Badge>
-        <ApperIcon
+        <Icon
           name={pending ? 'LoaderCircle' : 'ArrowRight'}
           size={14}
           className={pending ? 'animate-spin' : ''}

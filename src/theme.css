@@ -1,8 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
-
 :root {
-  --font-sans: 'Manrope', system-ui, sans-serif;
-  --font-heading: 'Barlow Condensed', Impact, sans-serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-heading: 'Arial Narrow', 'Liberation Sans Narrow', Impact, sans-serif;
   --radius: 0.5rem;
   --spacing-sidebar: 16rem;
   --spacing-header: 3.75rem;

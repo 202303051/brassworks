@@ -5,7 +5,7 @@ body:
   - type: input
     id: phase
     attributes:
-      label: Phase and Apper version
+      label: Phase and app version
       placeholder: Phase 0, latest preview
     validations:
       required: true

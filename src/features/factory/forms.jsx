@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import ApperIcon from '@/components/ApperIcon';
+import Icon from '@/components/Icon';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { useFactory } from './FactoryProvider';
@@ -237,7 +237,7 @@ export function FormFooter({ entity, model }) {
           </Link>
         </Button>
         <Button type="submit" className="min-h-12 min-w-40" disabled={model.pending}>
-          {model.pending && <ApperIcon name="LoaderCircle" size={16} className="animate-spin" />}
+          {model.pending && <Icon name="LoaderCircle" size={16} className="animate-spin" />}
           {model.pending ? 'Saving…' : model.id ? 'Save changes' : 'Save record'}
         </Button>
       </div>

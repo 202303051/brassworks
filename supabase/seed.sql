@@ -1,0 +1,68 @@
+-- Fake factory records for a NEW LOCAL / STAGING project only.
+-- Never run sample seeds against a project containing real production records.
+-- No users, credentials, invitations or initial Admin account are created here.
+begin;
+insert into public.app_config(id,min_supported_app_version,maintenance_mode)
+values('00000000-0000-0000-0000-000000000001','0.3.0',false) on conflict(id) do nothing;
+
+insert into public.master_lists(id,type,name) values
+('e0000000-0000-0000-0000-000000000001','company','Shree Brass Industries'),
+('e0000000-0000-0000-0000-000000000002','company','Saurashtra Metal Works'),
+('e0000000-0000-0000-0000-000000000003','company','Baroda Precision Components'),
+('e0000000-0000-0000-0000-000000000011','grade','Free Cutting IS 319 / CZ121'),
+('e0000000-0000-0000-0000-000000000012','grade','Forging Brass'),
+('e0000000-0000-0000-0000-000000000013','grade','Naval Brass'),
+('e0000000-0000-0000-0000-000000000021','billet_size','100mm x 600mm'),
+('e0000000-0000-0000-0000-000000000022','billet_size','125mm x 750mm'),
+('e0000000-0000-0000-0000-000000000023','billet_size','150mm x 900mm'),
+('e0000000-0000-0000-0000-000000000031','material','Copper Scrap'),
+('e0000000-0000-0000-0000-000000000032','material','Zinc'),
+('e0000000-0000-0000-0000-000000000033','material','Brass Honey'),
+('e0000000-0000-0000-0000-000000000034','material','Turning/Boring'),
+('e0000000-0000-0000-0000-000000000035','material','Lead'),
+('e0000000-0000-0000-0000-000000000041','rod_size','20mm Round x 3000mm'),
+('e0000000-0000-0000-0000-000000000042','rod_size','25mm Hexa x 3000mm')
+on conflict(id) do nothing;
+
+insert into public.heats(id,entry_date,shift,furnace_no,heat_no,start_time,ready_time,grade_id) values
+('e1000000-0000-0000-0000-000000000001',(now() at time zone 'Asia/Kolkata')::date-2,
+ 'Day','F-01','DEMO-IS319-001','08:00','10:20','e0000000-0000-0000-0000-000000000011'),
+('e1000000-0000-0000-0000-000000000002',(now() at time zone 'Asia/Kolkata')::date-1,
+ 'Night','F-02','DEMO-FORGING-002','23:10','01:40','e0000000-0000-0000-0000-000000000012'),
+('e1000000-0000-0000-0000-000000000003',(now() at time zone 'Asia/Kolkata')::date,
+ 'Day','F-01','DEMO-NAVAL-003','07:30','09:45','e0000000-0000-0000-0000-000000000013')
+on conflict(id) do nothing;
+
+insert into public.heat_materials(id,heat_id,material_id,weight_kg) values
+('e1100000-0000-0000-0000-000000000001','e1000000-0000-0000-0000-000000000001','e0000000-0000-0000-0000-000000000031',420),
+('e1100000-0000-0000-0000-000000000002','e1000000-0000-0000-0000-000000000001','e0000000-0000-0000-0000-000000000032',180),
+('e1100000-0000-0000-0000-000000000003','e1000000-0000-0000-0000-000000000002','e0000000-0000-0000-0000-000000000033',640),
+('e1100000-0000-0000-0000-000000000004','e1000000-0000-0000-0000-000000000002','e0000000-0000-0000-0000-000000000032',110),
+('e1100000-0000-0000-0000-000000000005','e1000000-0000-0000-0000-000000000003','e0000000-0000-0000-0000-000000000031',560),
+('e1100000-0000-0000-0000-000000000006','e1000000-0000-0000-0000-000000000003','e0000000-0000-0000-0000-000000000032',190)
+on conflict(id) do nothing;
+
+insert into public.spectro_results(id,heat_id,cu,zn,pb,fe,sn,auto_zn,target_grade_id,status) values
+('e1200000-0000-0000-0000-000000000001','e1000000-0000-0000-0000-000000000001',58.0,39.4,2.3,0.2,0.1,true,'e0000000-0000-0000-0000-000000000011','Pass'),
+('e1200000-0000-0000-0000-000000000002','e1000000-0000-0000-0000-000000000002',60.0,39.4,0.3,0.2,0.1,true,'e0000000-0000-0000-0000-000000000012','Correction Done'),
+('e1200000-0000-0000-0000-000000000003','e1000000-0000-0000-0000-000000000003',60.0,38.7,0.1,0.2,1.0,true,'e0000000-0000-0000-0000-000000000013','Pass')
+on conflict(id) do nothing;
+
+insert into public.billet_entries(id,entry_date,heat_id,company_id,grade_id,size_id,billet_count,total_weight_kg) values
+('e2000000-0000-0000-0000-000000000001',(now() at time zone 'Asia/Kolkata')::date-2,'e1000000-0000-0000-0000-000000000001','e0000000-0000-0000-0000-000000000001','e0000000-0000-0000-0000-000000000011','e0000000-0000-0000-0000-000000000021',60,570),
+('e2000000-0000-0000-0000-000000000002',(now() at time zone 'Asia/Kolkata')::date-1,'e1000000-0000-0000-0000-000000000002','e0000000-0000-0000-0000-000000000002','e0000000-0000-0000-0000-000000000012','e0000000-0000-0000-0000-000000000022',40,710),
+('e2000000-0000-0000-0000-000000000003',(now() at time zone 'Asia/Kolkata')::date,'e1000000-0000-0000-0000-000000000003','e0000000-0000-0000-0000-000000000003','e0000000-0000-0000-0000-000000000013','e0000000-0000-0000-0000-000000000023',24,725)
+on conflict(id) do nothing;
+
+insert into public.rod_plans(id,entry_date,rod_type,length_mm,outer_mm,inner_mm,dimension,grade_id,planned_weight_kg,company_id,order_name,priority,status) values
+('e3000000-0000-0000-0000-000000000001',(now() at time zone 'Asia/Kolkata')::date,'Round',3000,20,0,'Diameter','e0000000-0000-0000-0000-000000000011',500,'e0000000-0000-0000-0000-000000000001','PO-RAJ-1052','Urgent','In Production'),
+('e3000000-0000-0000-0000-000000000002',(now() at time zone 'Asia/Kolkata')::date,'Hexa',3000,25,0,'Across flats','e0000000-0000-0000-0000-000000000012',350,'e0000000-0000-0000-0000-000000000002','PO-JAM-2081','Normal','In Production'),
+('e3000000-0000-0000-0000-000000000003',(now() at time zone 'Asia/Kolkata')::date,'Octa',2500,30,0,'Across flats','e0000000-0000-0000-0000-000000000011',250,'e0000000-0000-0000-0000-000000000001','PO-RAJ-1053','Normal','Planned'),
+('e3000000-0000-0000-0000-000000000004',(now() at time zone 'Asia/Kolkata')::date,'Hollow',3000,32,20,'Diameter','e0000000-0000-0000-0000-000000000013',400,'e0000000-0000-0000-0000-000000000003','PO-BAR-3106','Urgent','Planned')
+on conflict(id) do nothing;
+
+insert into public.rod_production(id,entry_date,plan_id,rod_type,length_mm,outer_mm,inner_mm,dimension,company_id,grade_id,size_id,billets_used,actual_weight_kg,scrap_weight_kg) values
+('e4000000-0000-0000-0000-000000000001',(now() at time zone 'Asia/Kolkata')::date,'e3000000-0000-0000-0000-000000000001','Round',3000,20,0,'Diameter','e0000000-0000-0000-0000-000000000001','e0000000-0000-0000-0000-000000000011','e0000000-0000-0000-0000-000000000021',12,108,6),
+('e4000000-0000-0000-0000-000000000002',(now() at time zone 'Asia/Kolkata')::date,'e3000000-0000-0000-0000-000000000002','Hexa',3000,25,0,'Across flats','e0000000-0000-0000-0000-000000000002','e0000000-0000-0000-0000-000000000012','e0000000-0000-0000-0000-000000000022',8,133,9)
+on conflict(id) do nothing;
+commit;

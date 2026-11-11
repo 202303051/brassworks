@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { APP_CONFIG } from '@/config/app.config';
-import ApperIcon from '@/components/ApperIcon';
+import Icon from '@/components/Icon';
 import ThemeToggle from '@/components/ThemeToggle';
 import FactoryClock from '@/components/FactoryClock';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
@@ -45,7 +45,7 @@ function Shell() {
             className="flex min-h-12 items-center gap-3 rounded-md focus-visible:outline-2 focus-visible:outline-ring"
           >
             <span className="flex size-11 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <ApperIcon name={APP_CONFIG.icon} size={25} />
+              <Icon name={APP_CONFIG.icon} size={25} />
             </span>
             <span>
               <span className="block font-heading text-3xl font-bold uppercase leading-none tracking-wide">
@@ -85,7 +85,7 @@ function Shell() {
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-1 sm:px-8">
           <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
             <span className="size-2 rounded-full bg-highlight" aria-hidden="true" />
-            Phase 01 <span className="text-muted-foreground">/ Browser-local demo</span>
+            Phase 02 <span className="text-muted-foreground">/ Browser-local demo</span>
           </span>
           <div className="flex flex-wrap items-center gap-3">
             <FactoryClock />

@@ -10,17 +10,7 @@ function walk(directory) {
   );
 }
 
-const sources = [
-  ...walk('src/features/factory'),
-  ...['FurnaceRecords', 'BilletRecords', 'PlanRecords', 'OutputRecords'].flatMap((folder) =>
-    walk('src/pages/' + folder),
-  ),
-  ...['Home', 'Furnace', 'Production', 'Planning', 'Finished', 'PhaseGuide', 'Privacy'].map(
-    (name) => 'src/pages/' + name + '.jsx',
-  ),
-  'src/layouts/PublicLayout.jsx',
-  'src/lib/factory-time.js',
-];
+const sources = walk('src');
 function run(command, args) {
   execFileSync(command, args, {
     stdio: 'inherit',
@@ -28,18 +18,9 @@ function run(command, args) {
     cwd: new URL('../', import.meta.url),
   });
 }
+run('npm', ['exec', '--', 'eslint', ...sources.filter((p) => /\.(jsx?|mjs)$/.test(p))]);
 run('npm', [
   'exec',
-  '--yes',
-  '--package=eslint@10.14.0',
-  '--',
-  'eslint',
-  ...sources.filter((p) => /\.(jsx?|mjs)$/.test(p)),
-]);
-run('npm', [
-  'exec',
-  '--yes',
-  '--package=prettier@3.6.2',
   '--',
   'prettier',
   '--check',
@@ -47,6 +28,7 @@ run('npm', [
   'tests/factory-model.test.mjs',
   'tests/factory-time.test.mjs',
   'security-tests/phase-1.test.mjs',
+  'security-tests/standalone.test.mjs',
   'scripts/check-phase-1.mjs',
   'eslint.config.js',
 ]);
@@ -59,4 +41,5 @@ run(process.execPath, [
   'tests/factory-model.test.mjs',
   'tests/factory-time.test.mjs',
   'security-tests/phase-1.test.mjs',
+  'security-tests/standalone.test.mjs',
 ]);

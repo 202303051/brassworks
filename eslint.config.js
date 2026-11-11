@@ -1,27 +1,6 @@
 export default [
   {
-    files: [
-      'src/lib/factory-time.js',
-      'src/config/app.config.js',
-      'src/content/phase-plan.js',
-      'src/components/FactoryClock.jsx',
-      'src/components/DepartmentBrief.jsx',
-      'src/layouts/PublicLayout.jsx',
-      'src/layouts/OwnerLayout.jsx',
-      'src/pages/Home.jsx',
-      'src/pages/Furnace.jsx',
-      'src/pages/Production.jsx',
-      'src/pages/PhaseGuide.jsx',
-      'src/pages/Privacy.jsx',
-      'src/services/userPermissions.js',
-      'src/features/factory/**/*.{js,jsx}',
-      'src/pages/Planning.jsx',
-      'src/pages/Finished.jsx',
-      'src/pages/FurnaceRecords/*.jsx',
-      'src/pages/BilletRecords/*.jsx',
-      'src/pages/PlanRecords/*.jsx',
-      'src/pages/OutputRecords/*.jsx',
-    ],
+    files: ['src/**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -30,6 +9,8 @@ export default [
       },
       globals: {
         window: 'readonly',
+        localStorage: 'readonly',
+        console: 'readonly',
         document: 'readonly',
         Blob: 'readonly',
         URL: 'readonly',
