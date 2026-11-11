@@ -8,9 +8,14 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   web:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,11 +26,20 @@ jobs:
       - run: npm run check
       - run: npm audit --audit-level=high
       - run: npm run build
-      - run: npx playwright install --with-deps chromium
-      - run: node scripts/test-browser.mjs
+      - name: Browser scenarios
+        timeout-minutes: 5
+        run: |
+          browser_executable="$(command -v google-chrome || command -v chromium || true)"
+          if [ -n "$browser_executable" ]; then
+            CHROMIUM_PATH="$browser_executable" node scripts/test-browser.mjs
+          else
+            npx playwright install --with-deps chromium
+            node scripts/test-browser.mjs
+          fi
 
   database:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
