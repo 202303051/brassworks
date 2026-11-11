@@ -1,4 +1,17 @@
-# Phone preview follow-up — 0.3.2
+# Furnace layout and spectro photo scan — 0.3.4
+
+Executed on 12 November 2026 using fake records and a synthetic printed report image. This completes the requested furnace/demo improvements; no authentication or later phase was started.
+
+- All 76 automated model, parser, date and source-security tests passed, along with source lint and formatting. The covered modules reached 89.43% lines, 97.33% branches and 96.77% functions. This is not full-application coverage; the asynchronous OCR flow is exercised separately in the browser.
+- The production build passed. The existing large-main-bundle warning remains. OCR code/model assets are local and loaded only when scanning, rather than added to the initial app bundle.
+- All 28 existing factory browser scenarios passed after the layout changes. No uncaught page errors were reported.
+- All seven dedicated photo/layout browser checks passed. Real OCR read Cu 58.20%, Zn 39.00%, Pb 2.50%, Fe 0.10% and Sn 0.20% from a synthetic PNG. The checks verify reviewed application, blocking totals above 100%, saving the heat over the PC's LAN HTTP address, unsupported-image/cancellation handling and no external requests or HTTP photo uploads.
+- Furnace lists/forms were checked at 360, 768 and 1440 px with no horizontal page overflow. Visual mobile review confirmed paired metrics, compact controls and organized material/chemistry details.
+- Images remain transient browser objects; they are not uploaded or attached to saved heat records. Missing/conflicting/bounded readings are not guessed. A detected Zn value switches that form to manual Zn; unchecked fields retain their values.
+- No real spectrometer photo or physical phone was supplied for accuracy testing. Blurred photos, unusual report formats and multiple measurement rows may require manual correction. Every detected reading must be reviewed. This is React web, not an Expo Go/native binary.
+- SQL/database tests were not rerun because Docker is absent on this PC; the schema was unchanged. Authentication, cloud sharing, releases and native builds remain later work.
+
+## Phone preview follow-up — 0.3.2
 
 Two regression tests cover secure UUID generation on local HTTP connections that omit `crypto.randomUUID`: the fallback sets the UUID version/variant bits, generates distinct IDs and rejects unavailable secure randomness. All 66 automated checks passed. The LAN browser run verified heat/receipt/plan/output creation and stock operations; a later development hot reload interrupted the long run, so its partial execution is not reported as a full pass. Final built-app regression results are recorded with the subsequent UI/photo-scanning version.
 

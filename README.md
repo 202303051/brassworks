@@ -1,6 +1,6 @@
 # Brassworks
 
-A standalone brass-factory web application. Version **0.3.2** adds Windows and phone-browser local setup to the completed Phase 0–2 application. The factory screens remain a browser-local demo until the authentication and data-connection phases.
+A standalone brass-factory web application. Version **0.3.4** adds an organized furnace workspace and on-device spectro photo scanning to the completed Phase 0–2 application. The factory screens remain a browser-local demo until the authentication and data-connection phases.
 
 ## Run locally
 
@@ -35,6 +35,7 @@ Open the localhost URL printed by Vite. No environment file, builder account or 
 - Date/search filters, sorting, pagination, inline master additions, filtered CSV and print/PDF.
 - Browser-local persistence, transaction-safe stock updates across tabs and stale-edit protection.
 - Responsive phone/tablet/desktop layouts, dark mode and IST dates.
+- Furnace photo scan: take/upload a JPG, PNG or WebP spectro result, review detected Cu/Zn/Pb/Fe/Sn percentages and apply them to the form. OCR runs locally; photos are not uploaded or saved with the heat. Always compare the detected values with the original report. Multiple readings or unreadable elements require manual entry.
 
 The existing IndexedDB database name and storage structure are preserved. Data stays in the current browser profile and is not shared between devices. Reset demo replaces that browser's records and added master options; export anything you want to retain first.
 
@@ -53,10 +54,11 @@ npm audit --audit-level=high
 npm run build
 npx playwright install chromium
 npm run test:browser
+npm run test:spectro
 npm run test:database
 ```
 
-`check` runs source lint/format checks and 64 automated tests with an 80% minimum business-logic coverage threshold. The executed model/seed/date tests reached 100% lines, 98.72% branches and 98% functions; these figures do not measure all UI code. The 28 browser scenarios use the built app and fake data, including blocked external requests, stock races, exports and responsive layouts. Set `CHROMIUM_PATH` to an installed Chromium executable if preferred.
+`check` runs source lint/format checks and automated model/parser/security tests with an 80% minimum coverage threshold for imported modules. These figures do not measure all UI or database code. The browser scenarios use the built app and fake data, including blocked external requests, stock races, exports and responsive layouts. `test:spectro` also reads a synthetic report image with the real local OCR engine and checks applying/saving its values over LAN HTTP. Set `CHROMIUM_PATH` to an installed Chromium executable if preferred. See the validation guide for executed counts and limits.
 
 The database runner requires a running local Docker engine. It creates an isolated PostgreSQL 17 container with no published ports, runs the migrations, seed, SQL policy/constraint tests and concurrent-write cases, then removes the container. It accepts no remote database URL. Never apply the local auth test shim to a real Supabase project.
 

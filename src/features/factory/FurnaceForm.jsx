@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useFactory } from './FactoryProvider';
 import SmartSelect from './SmartSelect';
+import SpectroPhotoScan from './SpectroPhotoScan';
 import { factoryToday, meltingMinutes, totalCharge, zincBalance } from './model';
 import { Field, fieldClass, number } from './ui';
 import {
@@ -205,6 +206,13 @@ export default function FurnaceForm() {
           </div>
         </FormPanel>
         <FormPanel compact step="03" title="Final spectro & grade">
+          <SpectroPhotoScan
+            form={form}
+            onApply={(values) => {
+              for (const [key, value] of Object.entries(values)) set(key, String(value));
+              if (Object.hasOwn(values, 'zn')) set('autoZn', false);
+            }}
+          />
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {['cu', 'pb', 'fe', 'sn'].map((key) => (
               <InputField

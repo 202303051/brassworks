@@ -6,6 +6,10 @@ export const route = { path: '/privacy', layout: 'public', access: 'public' };
 
 const notes = [
   [
+    'Spectro photo scanning',
+    'Photos are read on your device to suggest chemistry percentages. They are not sent to an external AI service or saved with the heat. Review every reading against the report before applying it. Only the values you apply and save become part of the browser-local heat record.',
+  ],
+  [
     'Browser-local demo',
     'The four factory sections use sample records and data entered in this browser. They are not shared with other phones or saved to a cloud factory database in this demo. Use fake data for testing.',
   ],

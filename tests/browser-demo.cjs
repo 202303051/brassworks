@@ -391,7 +391,7 @@ async function fillOutput(page, planId, count) {
         await page.getByLabel('Sort column').selectOption('heatNo');
         await page.getByLabel('Search records').fill(HEAT);
         await page.getByText('1 matching record', { exact: true }).waitFor();
-        await page.getByRole('link', { name: HEAT, exact: false }).click();
+        await page.getByRole('link', { name: HEAT, exact: true }).click();
         await page.getByRole('link', { name: 'Back to Furnace', exact: true }).click();
         assert.ok(page.url().includes('q=QA-HEAT-TEST'));
       },

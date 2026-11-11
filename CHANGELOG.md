@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.4 — Spectro photo reader
+
+- Add camera/photo upload to the furnace spectro panel, with on-device OCR for Cu, Zn, Pb, Fe and Sn.
+- Require review before applying readings. Detect conflicts, missing values, limits, unit conversion and totals; preserve unchecked/manual fields.
+- Package the OCR worker, engine and recognition model locally. No photo upload or external AI account is required.
+- Add real-image browser checks, parser regression cases and responsive furnace checks. Native Expo delivery remains outside this React web version.
+
 ## 0.3.3 — Organized furnace workspace
 
 - Use compact three-column summaries, paired filters and a smaller furnace heading/action area.

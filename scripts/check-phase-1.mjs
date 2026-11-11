@@ -12,6 +12,9 @@ function walk(directory) {
 }
 
 const sources = walk('src');
+const tests = ['tests', 'security-tests']
+  .flatMap((directory) => walk(directory))
+  .filter((path) => path.endsWith('.test.mjs'));
 function run(command, args) {
   execFileSync(command, args, {
     stdio: 'inherit',
@@ -30,10 +33,7 @@ run(process.execPath, [
   cli('prettier/bin/prettier.cjs'),
   '--check',
   ...sources,
-  'tests/factory-model.test.mjs',
-  'tests/factory-time.test.mjs',
-  'security-tests/phase-1.test.mjs',
-  'security-tests/standalone.test.mjs',
+  ...tests,
   'scripts/check-phase-1.mjs',
   'eslint.config.js',
 ]);
@@ -43,8 +43,5 @@ run(process.execPath, [
   '--test-coverage-lines=80',
   '--test-coverage-branches=80',
   '--test-coverage-functions=80',
-  'tests/factory-model.test.mjs',
-  'tests/factory-time.test.mjs',
-  'security-tests/phase-1.test.mjs',
-  'security-tests/standalone.test.mjs',
+  ...tests,
 ]);
