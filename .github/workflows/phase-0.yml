@@ -1,8 +1,9 @@
-name: Phase 0 scaffold checks
+name: Factory demo checks
 
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,5 +16,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Scoped lint, format, tests and coverage
-        run: node scripts/check-phase-0.mjs
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Lint, format, business tests and coverage
+        run: node scripts/check-phase-1.mjs
+      - name: Dependency audit
+        run: npm audit --audit-level=high
+      - name: Build web application
+        run: npm run build
+        env:
+          VITE_APPER_SDK_CDN_URL: https://cdn.apper.io/v1/apper-sdk.v1.js
+          VITE_APPER_PROJECT_ID: a267809592b04747a60b8bb33dd8399d
