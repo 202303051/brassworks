@@ -56,7 +56,15 @@ try {
     .find(existsSync);
   browser = await chromium.launch({
     headless: true,
-    executablePath: process.env.CHROMIUM_PATH || installed,
+    executablePath:
+      process.env.CHROMIUM_PATH ||
+      installed ||
+      [
+        '/usr/bin/google-chrome',
+        '/usr/bin/google-chrome-stable',
+        '/usr/bin/chromium',
+        '/usr/bin/chromium-browser',
+      ].find(existsSync),
     args: ['--no-sandbox'],
   });
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
@@ -148,13 +156,11 @@ try {
   await page.getByRole('alert').filter({ hasText: 'JPG, PNG or WebP' }).waitFor();
   assert.equal(await page.locator('#cu').inputValue(), '58');
   console.log('PASS unsupported photo types leave manual values intact');
-  await page
-    .getByLabel('Upload spectro photo', { exact: true })
-    .setInputFiles({
-      name: 'cancel-test.png',
-      mimeType: 'image/png',
-      buffer: Buffer.from(image, 'base64'),
-    });
+  await page.getByLabel('Upload spectro photo', { exact: true }).setInputFiles({
+    name: 'cancel-test.png',
+    mimeType: 'image/png',
+    buffer: Buffer.from(image, 'base64'),
+  });
   await page.getByRole('button', { name: 'Cancel scan', exact: true }).click();
   await page.getByRole('alert').filter({ hasText: 'Scan cancelled' }).waitFor();
   assert.equal(await page.locator('#cu').inputValue(), '58');

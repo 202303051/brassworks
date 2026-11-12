@@ -12,7 +12,7 @@ function walk(directory) {
 }
 const paths = [
   ...walk('src/features/factory').filter((path) => /\.jsx?$/.test(path)),
-  ...['Home', 'Furnace', 'Production', 'Planning', 'Finished', 'PhaseGuide', 'Privacy'].map(
+  ...['Home', 'Furnace', 'Production', 'Planning', 'Finished', 'Privacy'].map(
     (name) => 'src/pages/' + name + '.jsx',
   ),
   'src/layouts/PublicLayout.jsx',

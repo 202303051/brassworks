@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import PublicLayout from '@/layouts/PublicLayout';
 import PageSkeleton from '@/components/PageSkeleton';
 
@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
       { path: 'departments/production', element: page(() => import('@/pages/Production')) },
       { path: 'production/planning', element: page(() => import('@/pages/Planning')) },
       { path: 'production/finished', element: page(() => import('@/pages/Finished')) },
-      { path: 'phase-guide', element: page(() => import('@/pages/PhaseGuide')) },
+      { path: 'phase-guide', element: <Navigate to="/" replace /> },
       { path: 'privacy', element: page(() => import('@/pages/Privacy')) },
       { path: 'furnace/new', element: page(() => import('@/pages/FurnaceRecords/New')) },
       { path: 'furnace/:id', element: page(() => import('@/pages/FurnaceRecords/Detail')) },

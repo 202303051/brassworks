@@ -31,9 +31,9 @@ export default function Home() {
           </h1>
         </div>
         <div className="max-w-sm">
-          <Badge tone="brand">Phase 1 · Demo workflows</Badge>
+          <Badge tone="brand">One factory workspace</Badge>
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
-            Test every entry, calculation and stock movement without signing in. Sample data and
+            Furnace, billets, rod planning and finished stock, all in one place. Sample records and
             your changes are saved in this browser.
           </p>
         </div>
@@ -72,8 +72,8 @@ export default function Home() {
               Furnace department
             </h2>
             <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              Heat timing, raw-material charge and final spectro. Keep each melt together from start
-              to liquid ready.
+              Heat timing, raw-material charge and photo-assisted spectro entry. Keep each melt
+              together from start to liquid ready.
             </p>
             <div className="mt-6 flex min-h-12 items-center justify-between border-t border-border pt-4">
               <span className="text-xs font-bold uppercase tracking-widest">Open furnace log</span>

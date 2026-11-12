@@ -25,7 +25,6 @@ const links = [
       path.startsWith('/plans/') ||
       path.startsWith('/output/'),
   },
-  { to: '/phase-guide', label: 'Phase guide', active: (path) => path === '/phase-guide' },
 ];
 
 function Shell() {
@@ -85,7 +84,7 @@ function Shell() {
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 py-1 sm:px-8">
           <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
             <span className="size-2 rounded-full bg-highlight" aria-hidden="true" />
-            Phase 02 <span className="text-muted-foreground">/ Browser-local demo</span>
+            Factory workspace <span className="text-muted-foreground">/ Local demo</span>
           </span>
           <div className="flex flex-wrap items-center gap-3">
             <FactoryClock />
@@ -104,10 +103,7 @@ function Shell() {
       </main>
       <footer className="mt-8 border-t border-border print:hidden">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-5 text-xs leading-6 text-muted-foreground sm:px-8">
-          <p>
-            Demo data stays in this browser. Cloud sharing and access controls arrive in later
-            phases.
-          </p>
+          <p>Data is saved in this browser. Export records to keep or share a copy.</p>
           <Link
             to="/privacy"
             className="inline-flex min-h-12 items-center underline hover:text-foreground"

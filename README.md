@@ -1,6 +1,6 @@
 # Brassworks
 
-A standalone brass-factory web application. Version **0.3.5** adds local Windows database checks to the completed Phase 0–2 application, including its organized furnace workspace and on-device spectro photo scanning. The factory screens remain a browser-local demo until the authentication and data-connection phases.
+A standalone brass-factory web application. Version **0.3.6** presents all completed features in one factory interface, including the organized furnace workspace, on-device spectro photo scanning and verified database source. Development phases are tracked in Git and documentation. The factory screens remain a browser-local demo until authentication and shared-data integration are implemented.
 
 ## Run locally
 

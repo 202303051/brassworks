@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.6 — One factory interface
+
+- Show all completed workflows together through Home, Furnace and Production navigation.
+- Remove phase banners and the build-phase guide from the app; redirect old guide bookmarks to Home.
+- Keep development phases in technical documentation and separate commits on main.
+- Preserve existing browser data and make photo-assisted spectro entry visible in the Home description.
+- Reuse preinstalled Linux Chrome in the dedicated OCR browser checks, matching the factory browser runner's CI setup.
+- Let Windows and Linux CI jobs finish independently so one failure does not cancel the other platform's checks.
+
 ## 0.3.5 — Phase 2 local database checks
 
 - Install checksum-verified PostgreSQL 17.11 test tools inside the Windows project, with resumable downloads.

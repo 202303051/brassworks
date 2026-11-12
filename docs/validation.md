@@ -1,4 +1,12 @@
-# Phase 2 database verified locally — 0.3.5
+# Unified app and hosted check fix — 0.3.6
+
+All completed features now share the same Home, Furnace and Production interface. Phase banners and the build guide were removed from the app; old guide URLs redirect to Home. The existing browser database name is retained so updates preserve saved records.
+
+The unified app passed all 76 automated checks, the production build, all 28 factory browser scenarios and all seven real-OCR/layout browser checks. The dependency audit reported zero vulnerabilities, and the Phase 2 database rerun passed 345 SQL assertions plus two concurrent-write cases.
+
+The first newly published main run exposed a Linux CI harness issue: the normal browser suite used preinstalled Chrome, but the following OCR suite tried a missing Playwright browser executable. The job log confirmed `Executable doesn't exist` for the Chromium headless-shell cache path. The OCR runner now also finds preinstalled Linux Chrome. Matrix fail-fast is disabled so one platform's failure cannot cancel checks on the other platform. The database jobs in that run passed on both Windows and Linux. GitHub Actions remains the authoritative source for the subsequent hosted run's result.
+
+## Phase 2 database verified locally — 0.3.5
 
 Executed on 12 November 2026 using the checksum-verified PostgreSQL 17.11 Windows binaries downloaded from EDB, fake data and a fresh password-protected loopback-only cluster.
 

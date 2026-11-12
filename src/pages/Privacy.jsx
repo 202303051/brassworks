@@ -22,16 +22,12 @@ const notes = [
     'CSV downloads and printing are generated from the records and filters you select. Exported files remain on the device where you save them.',
   ],
   [
-    'Standalone application',
-    'The app runs from your local development server or your chosen web host. It uses system fonts and does not load a builder SDK or make requests to a builder service.',
+    'One factory workspace',
+    'Furnace operations, billets, rod planning and finished production share the same app and navigation. Completed features appear together as the app is updated.',
   ],
   [
     'Account access',
-    'The demo screens require no login. The database source defines row-security policies, the 20-active-user limit and audit controls. Connecting real invitations, login and shared data to this demo belongs to later phases.',
-  ],
-  [
-    'Source and internal documents',
-    'The owner selected a public GitHub repository for application code. The original factory brief and prior detailed internal project reports are excluded from the public source. Application source, setup instructions and database tests are saved on GitHub.',
+    'This local version opens without signing in. Records stay in the browser where they were entered and are not shared automatically with another phone or PC.',
   ],
 ];
 
@@ -45,7 +41,7 @@ export default function Privacy() {
         </Link>
       </Button>
       <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-        Data & access / Phase 2
+        Data & privacy
       </p>
       <h1 className="mt-3 font-heading text-5xl font-bold uppercase sm:text-6xl">
         Where your demo data lives.
