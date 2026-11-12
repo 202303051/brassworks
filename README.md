@@ -1,6 +1,6 @@
 # Brassworks
 
-A standalone brass-factory web application. Version **0.4.0** presents all completed features in one factory interface: furnace operations, on-device spectro photo scanning, verified database source and optional invite-only account access. The owner has no Supabase project yet, so the local demo remains available without login. Factory records still use browser-local storage; shared-data integration is Phase 4.
+A standalone brass-factory web application. Version **0.4.1** presents all completed features in one factory interface: furnace operations, on-device spectro photo scanning, verified database source and invite-only account access. The owner's local checkout now connects to the authorized Supabase project; fresh checkouts with both public settings empty still open the no-login demo. Factory records still use browser-local storage; shared-data integration is Phase 4.
 
 ## Run locally
 
@@ -27,7 +27,7 @@ Open the localhost URL printed by Vite. No environment file, builder account or 
 
 ## Optional factory accounts
 
-Account access adds invitation-only sign-in, password setup/reset, administrator authenticator verification, role gates, team invitations and activation controls. [Account setup](docs/account-setup.md) describes how to activate these against a separate Supabase project. Both public environment settings are empty by default, preserving the local demo. Connecting accounts does not yet connect factory records to the cloud.
+Account access adds invitation-only sign-in, password setup/reset, administrator authenticator verification, role gates, team invitations and activation controls. [Account setup](docs/account-setup.md) describes how to activate these against a separate Supabase project. Both public environment settings are empty in the tracked example, preserving the demo for fresh checkouts. The owner's configured values remain in ignored `.env.local`. Connecting accounts does not yet connect factory records to the cloud.
 
 ## Factory workflows
 
@@ -47,7 +47,7 @@ The existing IndexedDB database name and storage structure are preserved. Data s
 
 The `supabase/` directory contains migrations, sample data and executable SQL tests. The schema includes factory records, master lists, profiles, application configuration and an immutable audit log. Database triggers enforce stock integrity and the 20-active-user cap; row-level security defines the role permissions independently of the UI.
 
-Start with [database setup](docs/database-setup.md) and [database design](docs/database-design.md). Migrations are not automatically applied by running the web app. No hosted Supabase project has been provisioned or connected by this version.
+Start with [database setup](docs/database-setup.md) and [database design](docs/database-design.md). Migrations are not automatically applied by running the web app. The four migrations have been applied to the owner's authorized hosted project; fresh projects still need the documented setup.
 
 ## Checks
 
@@ -71,6 +71,6 @@ Actual results, findings and remaining limits are recorded in [validation](docs/
 
 ## Scope and versions
 
-Phase 3 account implementation is included; live account activation awaits the owner's Supabase project. Connecting factory records to shared database data is Phase 4 and has not started. The current delivery is React web and does not produce Expo, Android or iOS binaries.
+Phase 3 account implementation is included and hosted setup has been applied to the owner's authorized project. Users complete their own password and MFA steps. Connecting factory records to shared database data is Phase 4 and has not started. The current delivery is React web and does not produce Expo, Android or iOS binaries.
 
 GitHub is the application source of truth. All phases now use **main**, with separate commits per phase, and development continues one phase at a time. Existing commits and tags are retained. See [versioning](docs/versioning.md) for history, tags and rollback. The original brief, previous internal reports, local environment values and credentials are excluded from this public repository.

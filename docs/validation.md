@@ -1,4 +1,19 @@
-# Account access and full regression — 0.4.0
+# Hosted account setup — 0.4.1
+
+Executed on 12 November 2026 against the explicitly authorized new project. Personal account details, project connection values, CLI state and private setup artifacts remain outside Git.
+
+- Confirmed the public schema had no tables/views before deployment. Applied only migrations `001`–`004`, without the seed or local Auth shim. Hosted migration history matches all four source versions.
+- Read-only hosted verification found all ten application tables with RLS enabled and forced, plus the own-profile access RPC. Public-key clients were denied profile reads and access-RPC execution.
+- Applied invite-only Auth, a 12-character password minimum and exact localhost account callbacks. Existing hosted settings not declared in the reviewed config were preserved. Deployed the existing invitation function with exact local app origins and verified that missing/invalid sessions receive HTTP 401.
+- Supabase accepted the requested initial administrator invitation. Bootstrap assigned Admin only to that exact invited identity, guarded against unrelated existing profiles. The owner completed the invite, password and authenticator steps privately. A read-only hosted query subsequently confirmed email/password/MFA flags, and the real browser displayed the signed-in Administrator account with workspace and team access links. Passwords, codes and authenticator secrets were not read.
+- The actual connected app builds successfully and its local account screen displays email/password sign-in. Only public browser connection settings are present in ignored `.env.local`.
+- All **87 automated tests**, **28 prior factory browser scenarios**, **seven OCR/layout scenarios** and **13 Auth/development-server scenarios** passed with connected local environment values present. Browser fixtures clear those values explicitly and use separate ignored build directories, leaving the normal build unchanged.
+- The disposable local database rerun also passed all **365 SQL assertions and both concurrency cases**, then removed its temporary cluster. No fake Auth/test fixtures were applied to the hosted project.
+- Development-server checks use a real synthetic local setup file to verify HTTP 403 protection. A nonexistent path alone is insufficient evidence because the SPA fallback can return HTTP 200. Environment files are also denied. `.tools` is excluded from watching to avoid locks on running CLI binaries.
+
+Factory records remain browser-local pending Phase 4. No real-user tokens, passwords or authenticator secrets are read for verification. Auth browser regression tests use fake transport, while hosted setup checks exercise the real project's public APIs and schema protections; the account owner completed the first real password/MFA flow.
+
+## Account access and full regression — 0.4.0
 
 Executed on 12 November 2026. All previous phase tests are retained and included in the final main-branch regression suite.
 

@@ -36,6 +36,8 @@ run(process.execPath, [
   ...tests,
   'scripts/check-phase-1.mjs',
   'scripts/test-auth.mjs',
+  'scripts/build-browser-demo.mjs',
+  'vite.config.js',
   ...walk('supabase/functions'),
   'eslint.config.js',
 ]);

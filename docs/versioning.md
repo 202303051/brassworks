@@ -12,7 +12,7 @@ Phase 0, Phase 1 and Phase 2 already have separate commits. Main is advanced to 
 | Windows local setup            | Separate follow-up commit on main        | `0.3.1`       |
 | 3: optional account access     | Separate conventional commit on main     | `0.4.0`       |
 
-Phase 3 account implementation is version `0.4.0`, in a separate commit on main. The owner's no-project configuration keeps the local demo available. Factory data remains browser-local until Phase 4. See [account setup](account-setup.md) for staging activation and its verification boundary.
+Phase 3 account implementation is version `0.4.0`, in a separate commit on main. Version `0.4.1` connects the owner's authorized hosted account project and isolates regression fixtures from those local settings. Factory data remains browser-local until Phase 4. See [account setup](account-setup.md) for activation and its verification boundary.
 
 ## Save each future phase
 

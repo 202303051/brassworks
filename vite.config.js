@@ -7,4 +7,8 @@ import { localOcrAssets } from './scripts/ocr-assets.mjs';
 export default defineConfig({
   plugins: [react(), tailwindcss(), localOcrAssets()],
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
+  server: {
+    watch: { ignored: ['**/.tools/**'] },
+    fs: { deny: ['.env', '.env.*', '*.{crt,pem}', '**/.git/**', '**/.tools/**'] },
+  },
 });

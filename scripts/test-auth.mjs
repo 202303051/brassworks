@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { existsSync, mkdirSync } from 'node:fs';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { chromium } from 'playwright';
@@ -227,6 +227,16 @@ try {
     await delay(150);
   }
   assert.ok(ready, output);
+  mkdirSync('.tools', { recursive: true });
+  writeFileSync(
+    '.tools/auth-protected-fixture.txt',
+    'Synthetic private setup fixture; never serve this file.',
+  );
+  for (const path of ['/.env.local', '/.tools/auth-protected-fixture.txt']) {
+    const response = await fetch(base + path);
+    assert.equal(response.status, 403, 'Development server must deny ' + path);
+  }
+  await pass('development server blocks environment and local setup files');
   browser = await chromium.launch({
     headless: true,
     executablePath: process.env.CHROMIUM_PATH || installed,

@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { networkInterfaces } from 'node:os';
 import { setTimeout as delay } from 'node:timers/promises';
 import { chromium } from 'playwright';
+import { buildBrowserDemo } from './build-browser-demo.mjs';
 
 const host =
   Object.values(networkInterfaces())
@@ -16,9 +17,20 @@ const host =
         /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(item.address),
     )?.address || '127.0.0.1';
 const base = `http://${host}:4176`;
+const outDir = buildBrowserDemo('spectro');
 const server = spawn(
   process.execPath,
-  ['node_modules/vite/bin/vite.js', 'preview', '--host', host, '--port', '4176', '--strictPort'],
+  [
+    'node_modules/vite/bin/vite.js',
+    'preview',
+    '--outDir',
+    outDir,
+    '--host',
+    host,
+    '--port',
+    '4176',
+    '--strictPort',
+  ],
   { stdio: 'pipe' },
 );
 let output = '';

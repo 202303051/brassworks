@@ -55,8 +55,8 @@ Install the Supabase CLI using its official installation instructions. From the 
 supabase init
 supabase login
 supabase link
-supabase db push --dry-run
-supabase db push
+supabase db push --remote --dry-run
+supabase db push --remote
 ```
 
 Run `supabase init` only when a local `supabase/config.toml` has not already been generated. `supabase link` interactively selects the project and requests its database password. Verify that the selected project is staging before confirming the push. The CLI reads the numbered migration files and tracks the versions it applied. Keep local CLI credentials out of Git.
@@ -83,7 +83,7 @@ A SQL Editor session is privileged database maintenance, not an example of brows
 
 ## Later connection and verification
 
-Phase 3 supplies optional invite-only authentication and session controls. The owner currently has no project and keeps the local demo available. Phase 4 connects factory records to these tables. Until then, saving factory records in the browser does not write to Supabase, and changing `app_config` does not block the demo's launch.
+Phase 3 supplies invite-only authentication and session controls. The owner's project has now been connected using ignored local public settings, with the reviewed migrations and invitation function deployed. Fresh checkouts without account settings still open the local demo. Phase 4 connects factory records to these tables. Until then, saving factory records in the browser does not write to Supabase, and changing `app_config` does not block the demo's launch.
 
 Hosted settings and real Supabase JWT/PostgREST behavior must be verified on your staging project when it is connected. The isolated tests execute PostgreSQL policies with a local auth shim; they do not send real verification email, enroll MFA or prove hosted backup settings.
 

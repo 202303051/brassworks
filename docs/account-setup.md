@@ -1,6 +1,6 @@
 # Factory account setup — Phase 3
 
-Version 0.4.0 adds account access in the same app. The owner has no Supabase project yet, so both public settings remain empty and the current local demo stays available. No hosted resources, users, real invitations or production data have been created by this delivery.
+Version 0.4.0 adds account access in the same app. Version 0.4.1 applies the four reviewed migrations, required Auth configuration and invitation function to the owner's new, explicitly authorized hosted project. Its public connection settings are stored only in the ignored local environment file, and the specified first administrator has been invited. Fresh checkouts keep both settings empty and can still use the no-login demo. Account owners complete their password and MFA verification themselves; factory-record synchronization is still Phase 4.
 
 ## What is implemented
 
@@ -34,5 +34,7 @@ Authenticator keys and QR images are displayed only during setup, never saved in
 Factory heats, billets, plans, outputs and added master options **still use the existing browser-local demo database**. Signing in does not migrate, isolate by user or synchronize those records. Use fake records on shared browsers; cloud factory data is Phase 4. The existing IndexedDB name is intentionally retained to preserve saved demo records.
 
 `npm run test:auth` runs the actual SDK against a local mock Auth transport and fake accounts. It verifies forms, callbacks, route/role gates, TOTP UI, invitations, access changes and expiry without sending mail. The disposable PostgreSQL suite separately verifies signed-claim policy behavior with its local shim. Neither proves real hosted JWT validation, SMTP delivery, TOTP cryptography, deployment configuration or production recovery. Complete those staging checks after provisioning the project.
+
+The factory and OCR browser runners build their own disconnected demo fixtures under ignored `.tools/browser-test-builds/`. They explicitly clear both public Auth values for those fixture builds, even when this PC has a connected `.env.local`, and never overwrite the normal `dist`. The real account test server separately supplies fake transport settings. Development servers deny requests for `.tools` and environment files, and ignore `.tools` changes to avoid watching running CLI binaries.
 
 Official API references: [password recovery](https://supabase.com/docs/reference/javascript/auth-resetpasswordforemail), [MFA enrollment](https://supabase.com/docs/reference/javascript/auth-mfa-enroll), [invitation API](https://supabase.com/docs/reference/javascript/auth-admin-inviteuserbyemail), [sign-out scope](https://supabase.com/docs/reference/javascript/auth-signout) and [Edge Function authentication](https://supabase.com/docs/guides/functions/auth).

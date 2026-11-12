@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1 — Hosted account setup and regression isolation
+
+- Apply the existing four schema migrations and invite-only Auth configuration to the owner's new hosted project, without seeds or test shims.
+- Deploy the reviewed invitation function and bootstrap only the explicitly requested first administrator; keep project values and account details out of Git.
+- Build factory/OCR browser fixtures separately with public Auth settings explicitly empty, so earlier-phase checks keep working after a local account connection is configured.
+- Exclude local tools/setup files from development-server file access and file watching; retain Vite's default environment, key and Git-file protections.
+- Keep factory records browser-local pending Phase 4. Real administrator password setup/MFA is completed by the account owner.
+
 ## 0.4.0 — Phase 3 account access
 
 - Add invite-only Supabase sign-in, invitation/password-recovery callbacks and password changes inside the existing interface.

@@ -2,14 +2,18 @@ import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { setTimeout as delay } from 'node:timers/promises';
 import { stripVTControlCharacters } from 'node:util';
+import { buildBrowserDemo } from './build-browser-demo.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const url = 'http://127.0.0.1:4175';
+const outDir = buildBrowserDemo('factory');
 const server = spawn(
   process.execPath,
   [
     'node_modules/vite/bin/vite.js',
     'preview',
+    '--outDir',
+    outDir,
     '--host',
     '127.0.0.1',
     '--port',
