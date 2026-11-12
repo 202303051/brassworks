@@ -1,6 +1,6 @@
 # Brassworks
 
-A standalone brass-factory web application. Version **0.3.6** presents all completed features in one factory interface, including the organized furnace workspace, on-device spectro photo scanning and verified database source. Development phases are tracked in Git and documentation. The factory screens remain a browser-local demo until authentication and shared-data integration are implemented.
+A standalone brass-factory web application. Version **0.4.0** presents all completed features in one factory interface: furnace operations, on-device spectro photo scanning, verified database source and optional invite-only account access. The owner has no Supabase project yet, so the local demo remains available without login. Factory records still use browser-local storage; shared-data integration is Phase 4.
 
 ## Run locally
 
@@ -23,7 +23,11 @@ npm ci
 npm run dev
 ```
 
-Open the localhost URL printed by Vite. No environment file, builder account or plugin is needed. Source edits use Vite Fast Refresh. The app uses system fonts and makes no requests to a builder SDK or hosted font service.
+Open the localhost URL printed by Vite. No environment file, builder account or plugin is needed for the demo. Source edits use Vite Fast Refresh. The app uses system fonts and makes no requests to a builder SDK or hosted font service.
+
+## Optional factory accounts
+
+Account access adds invitation-only sign-in, password setup/reset, administrator authenticator verification, role gates, team invitations and activation controls. [Account setup](docs/account-setup.md) describes how to activate these against a separate Supabase project. Both public environment settings are empty by default, preserving the local demo. Connecting accounts does not yet connect factory records to the cloud.
 
 ## Factory workflows
 
@@ -55,6 +59,7 @@ npm run build
 npx playwright install chromium
 npm run test:browser
 npm run test:spectro
+npm run test:auth
 npm run test:database
 ```
 
@@ -66,6 +71,6 @@ Actual results, findings and remaining limits are recorded in [validation](docs/
 
 ## Scope and versions
 
-Authentication is Phase 3; connecting the UI to shared database records is Phase 4. The current delivery is React web and does not produce Expo, Android or iOS binaries.
+Phase 3 account implementation is included; live account activation awaits the owner's Supabase project. Connecting factory records to shared database data is Phase 4 and has not started. The current delivery is React web and does not produce Expo, Android or iOS binaries.
 
 GitHub is the application source of truth. All phases now use **main**, with separate commits per phase, and development continues one phase at a time. Existing commits and tags are retained. See [versioning](docs/versioning.md) for history, tags and rollback. The original brief, previous internal reports, local environment values and credentials are excluded from this public repository.

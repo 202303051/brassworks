@@ -41,6 +41,7 @@ Expected successful output ends with `Database constraints, policies, triggers a
    - `supabase/migrations/001_factory_schema.sql`
    - `supabase/migrations/002_integrity_and_audit.sql`
    - `supabase/migrations/003_row_level_security.sql`
+   - `supabase/migrations/004_account_access.sql`
 4. Check that all application tables have RLS enabled. The `private` schema must remain outside the exposed API schemas.
 5. Optionally run `supabase/seed.sql` in this **staging** project for fake Indian factory samples. It does not create `auth.users` accounts or real invitations. Omit it from production.
 
@@ -58,7 +59,7 @@ supabase db push --dry-run
 supabase db push
 ```
 
-Run `supabase init` only when a local `supabase/config.toml` has not already been generated. `supabase link` interactively selects the project and requests its database password. Verify that the selected project is staging before confirming the push. The CLI reads the three numbered migration files and tracks the versions it applied. Keep local CLI credentials out of Git.
+Run `supabase init` only when a local `supabase/config.toml` has not already been generated. `supabase link` interactively selects the project and requests its database password. Verify that the selected project is staging before confirming the push. The CLI reads the numbered migration files and tracks the versions it applied. Keep local CLI credentials out of Git.
 
 The SQL Editor and CLI are alternative deployment methods. Choose one and preserve its migration history; do not apply the same new schema twice through different methods. When using the SQL Editor, track the applied filenames in your project runbook.
 
@@ -76,13 +77,13 @@ order by created_at;
 ```
 
 3. Create a `public.profiles` row using that selected account's UUID as `id`, your administrator's name as `full_name`, `admin` as `role`, and `true` as `is_active`. Use a privileged SQL Editor session, and leave creation/update metadata to the database triggers. Do not grant Admin to a different account merely because it appears first in the query.
-4. Enroll the administrator in Supabase TOTP MFA and obtain an `aal2` session before accessing the database through the authenticated API. Admin policies intentionally reject an `aal1` session. The application UI for this enrollment/sign-in arrives in Phase 3.
+4. Enroll the administrator in Supabase TOTP MFA and obtain an `aal2` session before accessing the database through the authenticated API. Admin policies intentionally reject an `aal1` session. Version 0.4.0 supplies the enrollment/sign-in interface; follow [account setup](account-setup.md) before connecting it to staging.
 
 A SQL Editor session is privileged database maintenance, not an example of browser permissions. Do not weaken RLS, spoof assurance claims or place a service-role key in the application to bypass the MFA requirement.
 
 ## Later connection and verification
 
-Phase 3 supplies invite-only authentication and session controls. Phase 4 connects the factory UI to these tables. Until then, saving records in the browser does not write to Supabase, and changing `app_config` does not block the demo's launch.
+Phase 3 supplies optional invite-only authentication and session controls. The owner currently has no project and keeps the local demo available. Phase 4 connects factory records to these tables. Until then, saving factory records in the browser does not write to Supabase, and changing `app_config` does not block the demo's launch.
 
 Hosted settings and real Supabase JWT/PostgREST behavior must be verified on your staging project when it is connected. The isolated tests execute PostgreSQL policies with a local auth shim; they do not send real verification email, enroll MFA or prove hosted backup settings.
 

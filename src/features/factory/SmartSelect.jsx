@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { useFactory } from './FactoryProvider';
 import { fieldClass, message } from './ui';
+import { useAuth } from '@/features/auth/AuthProvider';
 
 export default function SmartSelect({
   id,
@@ -15,6 +16,7 @@ export default function SmartSelect({
   suffix = '',
 }) {
   const { data, save } = useFactory();
+  const auth = useAuth();
   const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState('');
   const [pending, setPending] = useState(false);
@@ -59,7 +61,7 @@ export default function SmartSelect({
             {suffix}
           </option>
         ))}
-        <option value="__add_new__">+ Add new…</option>
+        {auth.canWrite('masters') && <option value="__add_new__">+ Add new…</option>}
       </select>
       {adding && (
         <div className="mt-2 rounded-md border border-border bg-muted p-3">

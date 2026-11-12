@@ -7,6 +7,8 @@ import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { FactoryProvider } from '@/features/factory/FactoryProvider';
 import { ResetDemoButton } from '@/features/factory/ui';
 import '@/features/factory/print.css';
+import AccessBoundary from '@/features/auth/AccessBoundary';
+import { useAuth } from '@/features/auth/AuthProvider';
 
 const links = [
   { to: '/', label: 'Home', active: (path) => path === '/' },
@@ -29,6 +31,7 @@ const links = [
 
 function Shell() {
   const { pathname } = useLocation();
+  const auth = useAuth();
   return (
     <div className="min-h-svh bg-background text-foreground">
       <a
@@ -55,7 +58,13 @@ function Shell() {
               </span>
             </span>
           </Link>
-          <div className="order-2 ml-auto">
+          <div className="order-2 ml-auto flex items-center gap-2">
+            <Link
+              to="/account"
+              className="inline-flex min-h-12 items-center px-2 text-sm font-semibold underline"
+            >
+              Account
+            </Link>
             <ThemeToggle className="[&_button]:min-h-12 [&_button]:min-w-12" />
           </div>
           <nav
@@ -88,7 +97,7 @@ function Shell() {
           </span>
           <div className="flex flex-wrap items-center gap-3">
             <FactoryClock />
-            <ResetDemoButton />
+            {auth.status === 'demo' && <ResetDemoButton />}
           </div>
         </div>
       </div>
@@ -98,7 +107,9 @@ function Shell() {
         className="mx-auto max-w-7xl px-4 py-7 outline-none [overflow-wrap:anywhere] sm:px-8 sm:py-9"
       >
         <ErrorBoundary>
-          <Outlet />
+          <AccessBoundary>
+            <Outlet />
+          </AccessBoundary>
         </ErrorBoundary>
       </main>
       <footer className="mt-8 border-t border-border print:hidden">

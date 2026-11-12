@@ -10,8 +10,9 @@ Phase 0, Phase 1 and Phase 2 already have separate commits. Main is advanced to 
 | 1: four factory demo workflows | `146f04c`                                | `v0.2.0`      |
 | 2: database and standalone app | `de907de`, followed by test-runner fixes | `v0.3.0`      |
 | Windows local setup            | Separate follow-up commit on main        | `0.3.1`       |
+| 3: optional account access     | Separate conventional commit on main     | `0.4.0`       |
 
-Phase 3 authentication is next; this setup update does not start it. The UI remains browser-local until the later data-connection phase.
+Phase 3 account implementation is version `0.4.0`, in a separate commit on main. The owner's no-project configuration keeps the local demo available. Factory data remains browser-local until Phase 4. See [account setup](account-setup.md) for staging activation and its verification boundary.
 
 ## Save each future phase
 

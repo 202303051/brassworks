@@ -35,6 +35,8 @@ run(process.execPath, [
   ...sources,
   ...tests,
   'scripts/check-phase-1.mjs',
+  'scripts/test-auth.mjs',
+  ...walk('supabase/functions'),
   'eslint.config.js',
 ]);
 run(process.execPath, [

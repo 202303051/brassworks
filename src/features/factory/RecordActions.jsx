@@ -6,10 +6,13 @@ import Icon from '@/components/Icon';
 import { useFactory } from './FactoryProvider';
 import { PLAN_STATUSES } from './model';
 import { Badge, Confirm, message, recordTitle, routes } from './ui';
+import { useAuth } from '@/features/auth/AuthProvider';
 
 export function DeleteRecord({ entity, row, onDeleted, compact = false }) {
+  const auth = useAuth();
   const { save } = useFactory();
   const [open, setOpen] = useState(false);
+  if (!auth.canWrite(entity)) return null;
   return (
     <>
       <Button
@@ -42,6 +45,8 @@ export function DeleteRecord({ entity, row, onDeleted, compact = false }) {
 
 export function EditRecord({ entity, row, compact = false }) {
   const location = useLocation();
+  const auth = useAuth();
+  if (!auth.canWrite(entity)) return null;
   return (
     <Button
       variant="outline"
@@ -61,6 +66,7 @@ export function EditRecord({ entity, row, compact = false }) {
 }
 
 export function PlanStatus({ row }) {
+  const auth = useAuth();
   const { save } = useFactory();
   const [open, setOpen] = useState(false);
   const [optimistic, setOptimistic] = useState(null);
@@ -82,6 +88,7 @@ export function PlanStatus({ row }) {
     }
   }
   const status = optimistic || row.status;
+  if (!auth.canWrite('plans')) return <Badge>{status}</Badge>;
   return (
     <>
       <button

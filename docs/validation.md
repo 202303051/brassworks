@@ -1,4 +1,17 @@
-# Unified app and hosted check fix — 0.3.6
+# Account access and full regression — 0.4.0
+
+Executed on 12 November 2026. All previous phase tests are retained and included in the final main-branch regression suite.
+
+- Source lint/format checks and **all 87 automated tests passed**, with zero failures or skipped tests. This includes the previous 76 tests plus account-policy and invitation-handler cases. Coverage of imported modules was 91.42% lines, 98.02% branches and 97.26% functions; these numbers do not represent full React UI coverage.
+- Production build passed and dependency audit reported **zero known vulnerabilities**.
+- All four migrations applied in the disposable PostgreSQL cluster. **365 SQL assertions** passed (345 foundation assertions plus 20 account-access assertions), along with both genuine stock/user-capacity concurrency cases. The cluster was stopped and removed.
+- **All 28 existing factory browser scenarios and seven OCR/layout scenarios passed** on the final built app, preserving local CRUD, stock integrity, exports, offline saves, responsive layouts and real on-device report recognition.
+- **All 12 authentication browser scenarios passed** using the actual Supabase SDK, a separate local Vite process, fake users and intercepted Auth responses. They cover protected deep links/public privacy, reset membership privacy, rejected credentials, department/viewer restrictions, ignored forged role metadata, access revocation, Admin TOTP enrollment and readable QR, wrong-code rejection, invitations and confirmed team updates, global logout, invite/recovery token callbacks, PKCE reset callbacks, idle expiry and failed profile verification. No uncaught page errors or unexpected external requests occurred.
+- The account browser suite now runs in both Windows and Linux CI alongside every earlier suite. Hosted results are reported only after the main-branch workflow finishes.
+
+The owner has no Supabase project and requested keeping the local demo. No hosted project, real account, email, live JWT or real TOTP verification is claimed. The server function and staging settings still need deployment/verification against that future project. Factory records remain browser-local and shared-data integration has not started. See [account setup](account-setup.md).
+
+## Unified app and hosted check fix — 0.3.6
 
 All completed features now share the same Home, Furnace and Production interface. Phase banners and the build guide were removed from the app; old guide URLs redirect to Home. The existing browser database name is retained so updates preserve saved records.
 

@@ -1,9 +1,11 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { refreshDemo, resetDemo, saveDemo, subscribeDemo } from './database';
+import { useAuth } from '@/features/auth/AuthProvider';
 
 const Context = createContext(null);
 
 export function FactoryProvider({ children }) {
+  const auth = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -37,7 +39,23 @@ export function FactoryProvider({ children }) {
   }, [refresh]);
 
   return (
-    <Context.Provider value={{ data, loading, error, refresh, save: saveDemo, reset: resetDemo }}>
+    <Context.Provider
+      value={{
+        data,
+        loading,
+        error,
+        refresh,
+        save: (...args) => {
+          if (!auth.canWrite(args[0].type === 'master' ? 'masters' : args[0].entity))
+            throw new Error('Your role cannot change these records.');
+          return saveDemo(...args);
+        },
+        reset: () => {
+          if (auth.status !== 'demo') throw new Error('Reset is available only in the local demo.');
+          return resetDemo();
+        },
+      }}
+    >
       {children}
     </Context.Provider>
   );

@@ -27,7 +27,7 @@ const notes = [
   ],
   [
     'Account access',
-    'This local version opens without signing in. Records stay in the browser where they were entered and are not shared automatically with another phone or PC.',
+    'The unconnected demo opens without signing in. When the owner connects factory accounts, sign-in and reset requests go to the configured Supabase project. Sessions are stored in this tab; administrators must use an authenticator. Account access does not yet move factory records to the cloud or share them across devices.',
   ],
 ];
 

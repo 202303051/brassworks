@@ -1,6 +1,6 @@
 # Database design — Phase 2
 
-Three ordered migrations define a single-factory PostgreSQL database compatible with Supabase. Authentication and shared-data integration are later phases; the web demo continues to use IndexedDB.
+Three foundation migrations and `004_account_access.sql` define a single-factory PostgreSQL database compatible with Supabase. Phase 3 adds optional account access; shared factory-data integration remains Phase 4. The factory demo continues to use IndexedDB.
 
 ## Records
 
@@ -49,6 +49,6 @@ The audit table has no authenticated write policy or write grant. Trusted trigge
 
 ## Boundaries
 
-This is a single-factory access model, not tenant isolation. Active users can read live records across the factory; role policies limit writes by department. The audit currently covers database record changes, including profile/role changes. Login/logout audit events require the later authentication integration.
+This is a single-factory access model, not tenant isolation. Active users can read live records across the factory; role policies limit writes by department. The application audit covers database record changes, including profile/role changes. Authentication events use [Supabase Auth audit logs](https://supabase.com/docs/guides/auth/audit-logs); they are not fabricated by browser inserts into the application audit table. Verify hosted capture and retention when connecting staging.
 
 The database defines update/maintenance configuration, but the current UI does not yet enforce a forced-update screen. Auth invitation settings, MFA enrollment, session security, realtime and shared cloud queries are not delivered by these migrations. Run the isolated tests and review [validation](validation.md) before applying migrations to a separate staging project.

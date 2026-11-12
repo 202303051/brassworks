@@ -11,6 +11,7 @@ function walk(directory) {
   );
 }
 const paths = [
+  ...walk('src/features/auth').filter((path) => /\.jsx?$/.test(path)),
   ...walk('src/features/factory').filter((path) => /\.jsx?$/.test(path)),
   ...['Home', 'Furnace', 'Production', 'Planning', 'Finished', 'Privacy'].map(
     (name) => 'src/pages/' + name + '.jsx',

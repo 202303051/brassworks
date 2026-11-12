@@ -42,6 +42,7 @@ jobs:
             node scripts/test-browser.mjs
           fi
       - run: npm run test:spectro
+      - run: npm run test:auth
 
   database:
     strategy:

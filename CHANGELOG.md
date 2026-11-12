@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 — Phase 3 account access
+
+- Add invite-only Supabase sign-in, invitation/password-recovery callbacks and password changes inside the existing interface.
+- Require verified active profiles and administrator TOTP MFA; preserve database enforcement of roles and the 20-active-user cap.
+- Add administrator team invitations, confirmed role/activation changes, stale-update checks and protection against changing one's own access.
+- Keep public credentials separate from the server-only invitation function. Reject partial/secret browser configuration and require HTTPS or localhost for sign-in.
+- Store sessions in tab storage with idle/absolute browser deadlines, periodic/focus revalidation and local/global sign-out.
+- Preserve the no-login local demo, existing browser records and on-device spectro scanning when no account project is configured.
+- Add account-policy, invitation-handler, SQL and real-SDK browser coverage. Hosted email delivery, real TOTP and production deployment require the owner's future Supabase project; shared factory data remains Phase 4.
+
 ## 0.3.6 — One factory interface
 
 - Show all completed workflows together through Home, Furnace and Production navigation.

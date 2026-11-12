@@ -13,6 +13,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useFactory } from './FactoryProvider';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { writeEntity } from '@/features/auth/policy';
 import {
   csvContent,
   displayDate,
@@ -594,6 +596,7 @@ export function Pagination({ query }) {
 }
 
 export function Empty({ title, createTo }) {
+  const auth = useAuth();
   return (
     <div className="rounded-lg border border-dashed border-border bg-card p-10 text-center">
       <Icon name="ClipboardList" size={30} className="mx-auto mb-3 text-muted-foreground" />
@@ -601,9 +604,11 @@ export function Empty({ title, createTo }) {
       <p className="mt-2 text-sm text-muted-foreground">
         Try clearing the filters, or add your first matching record.
       </p>
-      <Button asChild className="mt-5 min-h-12">
-        <Link to={createTo}>Add a record</Link>
-      </Button>
+      {auth.canWrite(writeEntity(createTo)) && (
+        <Button asChild className="mt-5 min-h-12">
+          <Link to={createTo}>Add a record</Link>
+        </Button>
+      )}
     </div>
   );
 }
@@ -743,6 +748,7 @@ export function exportRows(entity, rows, data) {
 }
 
 export function ListActions({ entity, query }) {
+  const auth = useAuth();
   const { data, refresh, loading } = useFactory();
   const location = useLocation();
   return (
@@ -773,21 +779,23 @@ export function ListActions({ entity, query }) {
         <Icon name="RefreshCw" size={16} />
         Refresh
       </Button>
-      <Button asChild className="min-h-12">
-        <Link
-          to={routes[entity] + '/new'}
-          state={{ returnTo: location.pathname + location.search }}
-        >
-          <Icon name="Plus" size={17} />
-          {entity === 'heats'
-            ? 'New heat'
-            : entity === 'billets'
-              ? 'Add billets'
-              : entity === 'plans'
-                ? 'New rod plan'
-                : 'Record production'}
-        </Link>
-      </Button>
+      {auth.canWrite(entity) && (
+        <Button asChild className="min-h-12">
+          <Link
+            to={routes[entity] + '/new'}
+            state={{ returnTo: location.pathname + location.search }}
+          >
+            <Icon name="Plus" size={17} />
+            {entity === 'heats'
+              ? 'New heat'
+              : entity === 'billets'
+                ? 'Add billets'
+                : entity === 'plans'
+                  ? 'New rod plan'
+                  : 'Record production'}
+          </Link>
+        </Button>
+      )}
     </>
   );
 }
