@@ -1,4 +1,18 @@
-# Furnace layout and spectro photo scan — 0.3.4
+# Phase 2 database verified locally — 0.3.5
+
+Executed on 12 November 2026 using the checksum-verified PostgreSQL 17.11 Windows binaries downloaded from EDB, fake data and a fresh password-protected loopback-only cluster.
+
+- All three migrations and the staging seed applied successfully.
+- **345 SQL assertions passed**, including constraints, stock/relationship invariants, row-level-security roles, metadata, audit immutability, soft deletion and user capacity.
+- **Both real concurrent-write cases passed:** only one activation took the twentieth user slot, and only one production entry consumed the final billet. Final counters and visible records matched expectations.
+- The runner stopped its temporary PostgreSQL server and removed only its marked test directory. A subsequent process check found no remaining test PostgreSQL processes.
+- Source lint/format checks, all 76 model/parser/security tests and the production build also passed. Application code is unchanged by this update; the 28 factory and 7 photo/layout browser scenarios passed for the immediately preceding version.
+- The first Windows execution reproduced a test-harness startup timeout: the detached postmaster inherited captured process pipes. Giving `pg_ctl` ignored standard streams fixed the issue. The failed run cleaned its cluster, and the corrected full run passed. Disposable initialization also skips its unnecessary disk-sync step.
+- The common SQL suite now serves both the native Windows and existing Docker backends. Windows database CI is configured; hosted CI results require a successful GitHub push and are not claimed here.
+
+This verifies the Phase 2 database foundation on this PC. It does not connect the web UI to shared data, provision hosted Supabase, verify real Auth/JWT/email/MFA, or start Phase 3. The browser demo, spectro photo reader and local launchers remain available.
+
+## Furnace layout and spectro photo scan — 0.3.4
 
 Executed on 12 November 2026 using fake records and a synthetic printed report image. This completes the requested furnace/demo improvements; no authentication or later phase was started.
 

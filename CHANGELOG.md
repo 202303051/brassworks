@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.5 — Phase 2 local database checks
+
+- Install checksum-verified PostgreSQL 17.11 test tools inside the Windows project, with resumable downloads.
+- Add a disposable, password-protected loopback database backend and keep Docker as an alternative.
+- Run both backends through the same migration, role/constraint, audit and concurrent-write suite.
+- Guard cleanup by resolved test-directory path and a per-run ownership marker; stop the temporary server before removal.
+- Add Windows database CI coverage and update local setup instructions. Authentication and shared application data remain later phases.
+
 ## 0.3.4 — Spectro photo reader
 
 - Add camera/photo upload to the furnace spectro panel, with on-device OCR for Cu, Zn, Pb, Fe and Sn.

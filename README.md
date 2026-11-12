@@ -1,6 +1,6 @@
 # Brassworks
 
-A standalone brass-factory web application. Version **0.3.4** adds an organized furnace workspace and on-device spectro photo scanning to the completed Phase 0–2 application. The factory screens remain a browser-local demo until the authentication and data-connection phases.
+A standalone brass-factory web application. Version **0.3.5** adds local Windows database checks to the completed Phase 0–2 application, including its organized furnace workspace and on-device spectro photo scanning. The factory screens remain a browser-local demo until the authentication and data-connection phases.
 
 ## Run locally
 
@@ -60,7 +60,7 @@ npm run test:database
 
 `check` runs source lint/format checks and automated model/parser/security tests with an 80% minimum coverage threshold for imported modules. These figures do not measure all UI or database code. The browser scenarios use the built app and fake data, including blocked external requests, stock races, exports and responsive layouts. `test:spectro` also reads a synthetic report image with the real local OCR engine and checks applying/saving its values over LAN HTTP. Set `CHROMIUM_PATH` to an installed Chromium executable if preferred. See the validation guide for executed counts and limits.
 
-The database runner requires a running local Docker engine. It creates an isolated PostgreSQL 17 container with no published ports, runs the migrations, seed, SQL policy/constraint tests and concurrent-write cases, then removes the container. It accepts no remote database URL. Never apply the local auth test shim to a real Supabase project.
+On Windows, `scripts/setup-database-local.ps1` installs verified PostgreSQL 17 tools inside this project; the runner creates a disposable, password-protected database bound only to loopback. On other systems it uses the existing isolated Docker container. Both backends execute the same migrations, seed, SQL policy/constraint tests and genuine concurrent-write cases, then clean up. The runner accepts no remote database URL. Never apply its local auth test shim to a real Supabase project.
 
 Actual results, findings and remaining limits are recorded in [validation](docs/validation.md).
 

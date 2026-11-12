@@ -43,11 +43,22 @@ jobs:
       - run: npm run test:spectro
 
   database:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - if: runner.os == 'Windows'
+        uses: actions/cache@v4
+        with:
+          path: .tools/postgres-17.11-5
+          key: postgres-windows-x64-17.11-5
+      - if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./scripts/setup-database-local.ps1
       - run: node scripts/test-database.mjs

@@ -4,16 +4,32 @@ The web demo does not need a database or environment variables to run. This guid
 
 ## Run the isolated tests first
 
-Install Node 24 LTS and Docker Desktop, or another local Docker engine. Start Docker, then run from the repository:
+On this Windows PC, open PowerShell in the project and install the local PostgreSQL test tools once:
+
+```powershell
+.\scripts\setup-database-local.ps1
+```
+
+This downloads PostgreSQL 17.11 from the EDB distribution linked by PostgreSQL.org and verifies its official SHA-256 checksum before extracting the required binaries, libraries and SQL support files into `.tools/`. Downloads resume if interrupted. It does not install a Windows service, modify the system PATH or create a firewall rule.
+
+Then open `Brassworks-Terminal.cmd` and run:
+
+```sh
+npm run test:database
+```
+
+The Windows runner creates a fresh, password-protected cluster for each run. It listens only on `127.0.0.1` on an automatically selected port, accepts no remote database URL, and contains only fake fixtures. It runs the same migrations, SQL assertions and real parallel-connection race checks as the container backend. At the end it stops that cluster and removes only its verified, marked temporary directory. No persistent application database is modified.
+
+On Linux/macOS, or to use the existing container backend, install Node 24 LTS and start a local Docker engine:
 
 ```sh
 npm ci
 npm run test:database
 ```
 
-The runner uses a pinned PostgreSQL 17 image. It creates a fresh network-isolated container, loads the local Supabase auth test shim, applies all numbered migrations in order, loads fake seed data and executes SQL plus concurrent-write checks. It removes the container at the end. No ports are published and no remote database URL is accepted.
+The container backend uses a pinned PostgreSQL 17 image. It creates a fresh network-isolated container, loads the local Supabase auth test shim, applies all numbered migrations in order, loads fake seed data and executes SQL plus concurrent-write checks. It removes the container at the end. No ports are published and no remote database URL is accepted. On Windows, `npm run test:database -- --docker` selects this backend explicitly.
 
-Docker must be available at its ordinary local socket. A first run may download the PostgreSQL image. The test shim at `supabase/tests/000_bootstrap.sql` simulates Supabase auth only for this disposable database. **Never run that file, the test SQL or the concurrency fixtures on a hosted project or a database holding real records.**
+For the container backend, Docker must be available at its ordinary local socket; a first run may download its image. The test shim at `supabase/tests/000_bootstrap.sql` simulates Supabase auth only for a disposable database. **Never run that file, the test SQL or the concurrency fixtures on a hosted project or a database holding real records.**
 
 Expected successful output ends with `Database constraints, policies, triggers and concurrent-write checks passed.` Actual executed results are in [validation](validation.md).
 

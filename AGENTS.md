@@ -9,3 +9,4 @@
 - Run checks appropriate to the change: npm run check, npm run build, npm run test:database and the local browser scenarios. Database tests must use an isolated disposable database and fake data.
 - Phase 2 prepares the database. Cloud connection and authentication remain later phases; preserve browser-local demo workflows in the meantime.
 - Use `Start-Brassworks.cmd` to run on this Windows PC. `scripts/setup-local.ps1` installs a project-local Node/npm runtime; never commit `.tools/` or local data.
+- On Windows, `scripts/setup-database-local.ps1` installs the project-local PostgreSQL test binaries. `npm run test:database` then uses a disposable, password-protected loopback cluster; Docker remains the other supported test backend. Never run the auth shim or test fixtures on a hosted or real-data database.
